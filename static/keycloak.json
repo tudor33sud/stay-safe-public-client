@@ -1,0 +1,8 @@
+{
+    "realm": "BdoAuth",
+    "auth-server-url": "https://auth.bdo.hcvpc.io/auth",
+    "ssl-required": "none",
+    "resource": "bdo-ui",
+    "public-client": true,
+    "use-resource-role-mappings": true
+  }

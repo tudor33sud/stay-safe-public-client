@@ -1,0 +1,439 @@
+<style>
+    /*base styling changes*/
+    
+    body .bright .x-page {
+        background-color: #dfdfdf !important;
+        color: rgba(0,0,0,1);         /*primary-font-color*/
+    }
+
+    .header-wrapper .name {
+        font-size: 15px !important;     /*primary-font-size*/
+        /*line-height: 17px !important;*/   /*primary-line-height*/
+        color: rgba(0,0,0,1) !important;         /*primary-font-color*/
+    }
+
+    .active {
+         color: rgba(0,0,0,1) !important;         /*primary-font-color*/
+    }
+
+    .menu-item, .card .card-header {
+        font-size: 15px !important;     /*primary-font-size*/
+        line-height: 17px !important;   /*primary-line-height*/
+    }
+
+    .dates-wrapper>div{
+        font-size: 14px !important;     /*secondary-font-size*/
+        color: rgba(0,0,0,.5) !important;         /*secondary-font-color*/
+    }
+
+    .rows-wrapper>div{
+        font-size: 14px !important;     /*secondary-font-size*/
+        color: rgba(0,0,0,1) !important;         /*secondary-font-color*/
+    }
+
+    .line-wrapper .dot-label{
+        font-size: 15px !important;     /*primary-font-size*/
+        color: rgba(0,0,0,1) !important;         /*primary-font-color*/
+    }
+
+    .input-label{
+        font-size: 15px !important;     /*primary-font-size*/
+        color: rgba(0,0,0,.5) !important;         /*secondary-font-color*/
+    }
+
+    .el-textarea__inner, .el-input__inner, .el-checkbox__label,
+     .dropdown-panel> div, .popover-title, 
+     .scale-title, .title-text, .modal-title,
+     .header-row>div span, .doc-table>div {
+        font-size: 15px !important;     /*primary-font-size*/
+        line-height: 17px !important;   /*primary-line-height*/
+        color: rgba(0,0,0,1) !important;         /*primary-font-color*/
+    }
+
+    #range.tooltip {
+        font-size: 14px !important;     /*secondary-font-size*/
+        color: rgba(0,0,0,1) !important;         /*primary-font-color*/
+    }
+
+    .scale-wrapper .label {
+        font-size: 14px !important;     /*secondary-font-size*/
+        line-height: 20px !important;
+    }
+
+    #secondary.rectangular {
+        font-size: 15px !important;     /*primary-font-size*/
+        line-height: 17px !important;   /*primary-line-height*/
+        color: rgba(0,0,0,1) !important;         /*primary-font-color*/
+    }
+
+    #primary.rectangular {
+        font-size: 15px !important;     /*primary-font-size*/
+        line-height: 17px !important;   /*primary-line-height*/
+    }
+
+    .button-label {
+        font-size: 14px !important;     /*secondary-font-size*/
+    }
+
+    /*---*/
+    
+    /*headers*/
+    #nav-tabs .tabs .menu-item:nth-child(2), #nav-tabs .tabs .menu-item:nth-child(5) {
+        pointer-events: none;
+        opacity: .5;
+    }
+    
+    /*therapy*/
+    #therapy-row {
+        margin: -16px -8px;
+        padding: 16px 8px;
+        transition: .2s all ease-in-out;
+        cursor: default;
+    }
+    
+    #therapy-row:hover {
+        background: rgba(0,0,0,.04);
+    }
+    
+    #therapy-row[selected] {
+        background: rgba(0,0,0,.08)        ;
+    }
+    
+    #therapy-content .divider-wrapper {
+        margin: 0 -8px;
+        width: calc(100% + 16px)
+    }
+    
+    .therapy-header {
+        font-size: 15px;    /*primary-font-size*/
+        line-height: 17px !important;   /*primary-line-height*/
+        color: rgba(0,0,0,.5);
+        line-height: 24px;
+        font-weight: bold;
+    }
+    
+    .therapy-item {
+        font-size: 15px;    /*primary-font-size*/
+        line-height: 17px !important;   /*primary-line-height*/
+        color: color(0,0,0,1);
+        line-height: 24px;
+    }
+    
+    .therapy-description {
+        font-size: 15px;    /*primary-font-size*/
+        line-height: 17px !important;   /*primary-line-height*/
+        color: rgba(0,0,0,.5);
+        line-height: 24px;
+    }
+    
+    .side-effect-wrapper {
+        margin-bottom: 8px;
+    }
+    
+    .el-progress {
+        padding: 8px 0;
+        line-height: 8px;
+    }
+    
+    .el-progress-bar__outer {
+        height: 8px !important;
+        background: rgba(0,0,0,.1) !important;
+    }
+    
+    .el-progress-bar__innerText {
+        display: none;
+    }
+    
+    .el-progress-bar__inner {
+        background-color: rgba(0,0,0,.5);
+    }
+    
+    /*annotation*/
+    .annotation-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%; 
+        line-height: 16px; 
+        text-align: center; 
+        font-family: calibri; 
+        font-weight: bold; 
+        font-size: 18px; 
+        margin-top: 16px;
+        margin-left: 4px;
+        color: white;
+        background-color: rgba(0,153,153,1);
+        display: inline-flex;
+    }
+    .annotation-plus {
+        margin-top: 16px;
+        font-size: 24px;
+        color: rgba(236,102,2,1);
+    }
+    
+    /*breadcrumb*/
+    .breadcrumb-wrapper {
+        width: 100%;
+        position: absolute;
+        top: 16px;
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .breadcrumb-item {
+        line-height: 24px;
+        font-size: 15px;
+        color: rgba(0,0,0,.5) !important;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .2s all ease-in-out;
+        background: transparent !important;
+    }
+    
+    .breadcrumb-item:hover {
+        color: rgba(0,0,0,.7) !important;
+    }
+    
+    #active.breadcrumb-item {
+        color: rgba(0,0,0,1) !important;
+        cursor: default !important;
+    }
+    
+    .breadcrumb-item + i {
+        margin: 0 8px;
+        color: rgba(0,0,0,.3);
+    }
+    
+    .patient-id {
+        position: absolute;
+        top: 16px;
+        z-index: 2;
+        line-height: 24px;
+        font-weight: bold;
+        font-size: 15px;
+        width: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: .8;
+        display: inline-flex;
+    }
+    
+    .dates-wrapper > div:last-child {
+        display: none;
+    }
+    .dates-wrapper > div:nth-last-child(3){
+        display: none;
+    }
+    
+    .dropdown-card {
+        overflow: inherit !important;
+    }
+    .dropdown-card-wrapper {
+        overflow: initial !important;
+    }
+    .dropdown-panel > div {
+        text-overflow: unset;
+        white-space: unset;
+    }
+    
+    #detail-item {
+       font-size: 15px;
+       font-family: "Calibri";
+       color: rgba(0, 0, 0, 1);
+    }
+    #detail-header {
+       color: rgba(0,0,0,.5); 
+       font-weight:bold;
+       font-size: 15px;
+       font-family: "Calibri"
+    }
+    #detail-header #medium.horizontal {
+        margin: 0px;
+    }
+    
+    #calc-card-left .card-content{
+        width: -webkit-fill-available !important;
+        margin-left: 40px;
+    }
+    
+    #calc-card-right .card-content{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        padding-left: 8px;
+    }
+    
+    #calc-card-right .card-content > .dropdown.input-wrapper {
+        margin-top: 0px;
+        margin-left: 8px;
+        width: 50%;;
+    }
+    #calc-card-right .card-content > .dropdown.input-wrapper:first-child {
+        margin-left: 48px;
+    }
+    
+    #calc-progress.el-progress {
+        padding-top: 0px;
+    }
+    #calc-progress .el-progress-bar__inner{
+        background-color: rgba(236,102,2,1)
+    }
+    #calc-progress .el-progress-bar__outer {
+        height: 16px !important;
+    }
+    
+    .calc-label {
+        /*margin-bottom: 8px;*/
+    }
+    .calc-value {
+        font-weight: bold;
+    }
+    
+    #lab-card-left .scale-title , #lab-card-right .scale-title { 
+        font-weight: bold;
+    }
+    
+    #lab-card-left .card-content {
+        margin-right: 4px;
+        width: calc(100% - 4px);
+    }
+    #lab-card-left .card-content > .card-grid {
+        margin-top: 8px;
+    }
+    
+    #lab-card-right .card-content {
+        margin-left: 4px;
+        width: calc(100% - 4px);
+    }
+    #lab-card-right .card-content > .card-grid {
+        margin-top: 8px;
+    }
+    
+    #risk-level {
+        /*height: 100%;*/
+        overflow: hidden;
+        position: relative;
+    }
+    
+    #risk-level .scale-wrapper {
+        transform: translateY(-50%);
+        padding: 8px 24px;
+        position: absolute;
+        top: calc(50%);
+        width: calc(100% - 56px);
+        margin-left: 28px;
+    }
+    
+    .risk-toggle {
+        width: 200px;
+        margin-left: calc(50% - 100px);
+        margin-top: 36px;
+    }
+    .risk-toggle.hidden {
+        visibility: hidden;
+    }
+    .risk-toggle .menu-item{
+        width: 100px;
+    }
+      .ctext {
+        font-size:14px; 
+        color:rgba(0,0,0,.7);
+        width:500px;
+    }
+
+    #diagnosis-card.card > .card-content , #details-card.card > .card-content , #therapy-card.card > .card-content {
+        padding: 0px;
+        overflow: hidden;
+    }
+    
+    #diagnosis-content.card , #details-content.card , #therapy-content.card {
+        background: transparent;
+        box-shadow: none;
+        flex: 1;
+    }
+    
+    #diagnosis-overview.card , #diagnosis-findings.card , #details-left.card , #details-right.card , #therapy-left.card , #therapy-right.card {
+        background: transparent;
+        box-shadow: none;
+        height: 100%;
+    }
+    
+    #diagnosis-content .card-content , #diagnosis-overview .card-content , #diagnosis-findings .card-content , #therapy-content .card-content , #therapy-left .card-content , #therapy-right .card-content ,   {
+        padding: 16px;
+    }
+    
+    
+    #timeline.card {
+        height: 144px;
+    }
+    
+    #dashboard.card-grid , #diagnosis-card , #therapy-card {
+        height: calc(100% - 152px);
+        margin-top: 8px;
+    }
+    
+    #details-card {
+        height: 100%; 
+    }
+    
+    #dashboard.card {
+        height: calc(50% - 4px);
+    }
+    
+    #exam-data .card-content {
+        display: flex !important;
+        align-items: center !important;
+    }
+    
+    #exam-type-card {
+        
+    }
+    
+    #diagnosis-card .group-bg {
+        background-color: rgba(0,0,0,0);
+        box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.05), 1px 2px 2px 0px rgba(0, 0, 0, 0.1), -1px 1px 1px 0px rgba(0, 0, 0, 0.05);
+        margin-top: 4px;
+    }
+    
+    #details-card .group-bg {
+        background-color: rgba(0,0,0,0);
+        box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.05), 1px 2px 2px 0px rgba(0, 0, 0, 0.1), -1px 1px 1px 0px rgba(0, 0, 0, 0.05);
+        margin-top: 4px;
+    }
+    
+    #details-content .data-table-wrapper {
+        margin: -12px -16px 0 -16px;
+        width: calc(100% + 32px);
+    }
+    
+    #lab-details-checkbox {
+        width: 32px !important;
+    }
+    
+    #lab-details-checkbox .el-checkbox {
+        padding: 0px;
+    }
+    
+    #lab-details-scale {
+        width: calc(100% - 40px) !important;
+    }
+    
+    .highlight > .card-header {
+        color: #FE6602;
+    }
+    /* css for the cartoon */
+    .legend {
+        font-size: 14px;
+        font-family: Calibri, Calibri;
+        fill: rgba(0,0,0,0.5);
+        color:rgba(0,0,0,0.5);
+        letter-spacing: 0.02em;
+    }
+    .cartoonText {
+        font-size: 15px;
+        font-family: Calibri, Calibri;
+        fill: #000000;
+        color: rgba(0,0,0,1);
+        line-height: 24px;
+        letter-spacing: 0.02em;
+    }
+</style>
