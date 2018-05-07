@@ -12,7 +12,7 @@ import VueSplit from 'vue-split-panel'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
+import './global.scss';
 Vue.use(VueAxios, axios)
 Vue.use(VueSplit)
 Vue.use(ElementUI)

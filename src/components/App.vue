@@ -2,7 +2,8 @@
 
     <body>
         This is app.vue
-        <el-button > tudor
+        <el-button class="tudor" > tudor
+          <p class="dummy"> dummy</p>
         </el-button>
         <button @click="logout()"> logout </button>
         <div>
@@ -11,6 +12,17 @@
 
     </body>
 </template>
+
+<style lang="sass" scoped>
+  .tudor {
+    background-color: red !important;
+
+    .dummy{
+      color:blue;
+    }
+  }
+</style>
+
 
 <script>
 module.exports = {
