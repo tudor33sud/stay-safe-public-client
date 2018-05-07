@@ -15,7 +15,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(VueAxios, axios)
 Vue.use(VueSplit)
-
+Vue.use(ElementUI)
 // launch app in div with id 'app'
 const appInstance = new Vue({
     el: document.getElementById("app"),

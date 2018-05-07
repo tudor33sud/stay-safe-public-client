@@ -2,6 +2,8 @@
 
     <body>
         This is app.vue
+        <el-button > tudor
+        </el-button>
         <button @click="logout()"> logout </button>
         <div>
             <router-view></router-view>
