@@ -51,4 +51,8 @@ router.beforeEach((to, from, next) => {
     }
 })
 
+router.onReady((cb, errCb) => {
+    history.pushState("", document.title, window.location.pathname + window.location.search);
+ });
+ 
 export default router
