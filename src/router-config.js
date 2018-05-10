@@ -14,10 +14,17 @@ Vue.use(VueRouter)
 const routes = [{
     path: '/',
     component: Components.MyComponent,
-    meta: { requiresAuth: true }
+    meta: {
+        requiresAuth: true
+    }
 },
-
-];
+{
+    path: '/events',
+    component: Components.MyOtherComponent,
+    meta: {
+        requiresAuth: true
+    }
+}];
 
 
 const router = new VueRouter({
@@ -53,6 +60,6 @@ router.beforeEach((to, from, next) => {
 
 router.onReady((cb, errCb) => {
     history.pushState("", document.title, window.location.pathname + window.location.search);
- });
- 
+});
+
 export default router
