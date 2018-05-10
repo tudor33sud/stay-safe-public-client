@@ -83,11 +83,12 @@ module.exports = {
       console.log(key, keyPath);
     },
     handleClick(menu) {
-      if (menu.index == 2) {
-        debugger;
-        this.$router.push('/events');
-      } else {
-        this.$router.push('/');
+      if (menu.index == 0) {
+        this.$router.push("/");
+      } else if (menu.index == 1) {
+        this.$router.push("/events");
+      } else if (menu.index == 2) {
+        this.$router.push("/contact");
       }
     }
   }
