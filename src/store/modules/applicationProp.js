@@ -1,5 +1,5 @@
 const state = {
-    "backendURL": "http://localhost:3005/"
+    "backendURL": "http://localhost:3005"
 }
 
 const getters = {

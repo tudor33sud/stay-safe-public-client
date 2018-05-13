@@ -14,7 +14,7 @@ import VueSplit from 'vue-split-panel'
 import './global.scss';
 
 import '../static//materialIcons.css'
-import { MdButton, MdIcon, MdContent, MdDrawer, MdToolbar, MdList, MdListItem } from 'vue-material/dist/components';
+import { MdDivider,MdButton, MdIcon, MdContent, MdDrawer, MdToolbar, MdList, MdListItem, MdAvatar,MdMenu } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
 Vue.use(VueAxios, axios)
@@ -24,8 +24,10 @@ Vue.use(MdIcon);
 Vue.use(MdContent);
 Vue.use(MdToolbar);
 Vue.use(MdList);
-Vue.use(MdListItem);
-
+Vue.use(MdDrawer);
+Vue.use(MdAvatar);
+Vue.use(MdMenu);
+Vue.use(MdDivider);
 // launch app in div with id 'app'
 const appInstance = new Vue({
     el: document.getElementById("app"),

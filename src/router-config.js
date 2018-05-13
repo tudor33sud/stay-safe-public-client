@@ -8,19 +8,17 @@ import security from './keycloak'
 // if you omit it, you need to register every Components
 // locally wherever you need it
 import Components from 'helpers/register-all-components';
-
 Vue.use(VueRouter)
-
 const routes = [{
     path: '/',
-    component: Components.MyComponent,
+    component: Components.Report,
     meta: {
         requiresAuth: true
     }
 },
 {
     path: '/events',
-    component: Components.MyOtherComponent,
+    component: Components.MyEvents,
     meta: {
         requiresAuth: true
     }

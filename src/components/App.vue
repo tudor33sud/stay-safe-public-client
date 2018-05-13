@@ -1,48 +1,101 @@
 <template>
-
-  <body>
-    <!-- <md-content>
-       <md-icon>menu</md-icon>
-    <md-button @click="logout()">Tudor</md-button>
-    <md-button class="md-icon-button">
-        <md-icon>thumb_up</md-icon>
+  <div class="page-container md-layout-column">
+    <md-toolbar class="md-primary fixedSizeToolbar">
+      <md-button class="md-icon-button" @click="showNavigation = true">
+        <md-icon>menu</md-icon>
       </md-button>
-      <div>
-      <small>Raised</small>
-      <md-button class="md-raised" @click="handleClick(1)">Default</md-button>
-      <md-button class="md-raised" :md-ripple="false" @click="handleClick(0)">Ripple Off</md-button>
-      <md-button class="md-raised md-primary" @click="handleClick(2)">Primary</md-button>
-      <md-button class="md-raised md-accent">Accent</md-button>
-      <md-button class="md-raised" disabled>Disabled</md-button>
-          </div>
-    </md-content> -->
-    <router-view></router-view>
-  </body>
+      <span class="md-title">Stay safe</span>
+
+      <div class="md-toolbar-section-end" v-show="authenticated">
+        <md-menu md-align-trigger>
+          <span md-menu-trigger>
+            <md-avatar class="md-avatar-icon" style="margin:0">{{username.substr(0,1)}}</md-avatar>
+          </span>
+          <md-menu-content>
+            <md-menu-item class="md-primary">{{username}}</md-menu-item>
+            <md-divider></md-divider>
+            <md-menu-item @click="logout()">Logout</md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </md-toolbar>
+
+    <md-drawer :md-active.sync="showNavigation">
+      <md-toolbar class="md-transparent" md-elevation="0">
+        <span class="md-title">Stay safe</span>
+      </md-toolbar>
+
+      <md-list>
+        <md-list-item v-for="(menuItem,index) in menuItems" :key="menuItem.name" class="navigation-button" @click="handleClick(index)">
+          <md-icon>{{menuItem.icon}}</md-icon>
+          <span class="md-list-item-text">{{menuItem.name}}</span>
+        </md-list-item>
+      </md-list>
+    </md-drawer>
+    <router-view class="router-view">
+    </router-view>
+  </div>
 </template>
 
-<style lang="sass" scoped>
 
+<style lang="sass" scoped>
+  // .page-container {
+  //   overflow:auto;
+  // }
+
+   // Demo purposes only
+  .fixedSizeToolbar{
+    min-height:56px;
+  }
+  .md-drawer {
+    width: 230px;
+    max-width: calc(100vw - 125px);
+  }
+
+  .router-view{
+    height: calc(100vh - 56px);
+    overflow:auto;
+  }
 </style>
 
 
 <script>
+import { mapGetters } from "vuex";
+import * as eventService from '../service/events';
 module.exports = {
-  mounted() {},
+  computed: {
+    ...mapGetters({
+      auth: "auth"
+    }),
+    username: function() {
+      if (this.auth) {
+        const tokenParsed = this.auth.idTokenParsed;
+        return tokenParsed.name;
+      }
+      return "";
+    },
+    authenticated: function(){
+      if(this.auth){
+        return this.auth.authenticated;
+      }
+      return false;
+    }
+  },
   data() {
     return {
-      isCollapse: false,
+      showNavigation: false,
       menuItems: [
         {
           name: "Report",
-          icon: "el-icon-location"
+          icon: "add_location"
         },
         {
           name: "My events",
-          icon: "el-icon-info"
+          icon: "event"
         },
         {
           name: "Contact",
-          icon: "el-icon-question"
+          icon: "contact_support"
         }
       ]
     };
@@ -50,12 +103,6 @@ module.exports = {
   methods: {
     logout: function() {
       this.$store.state.security.auth.logout();
-    },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
     },
     handleClick(menu) {
       if (menu == 0) {
@@ -65,6 +112,9 @@ module.exports = {
       } else if (menu == 2) {
         this.$router.push("/events");
       }
+      setTimeout(() => {
+        this.showNavigation = false;
+      }, 100);
     }
   }
 };
