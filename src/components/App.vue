@@ -61,8 +61,13 @@
 
 <script>
 import { mapGetters } from "vuex";
-import * as eventService from '../service/events';
+import * as eventService from "../service/events";
 module.exports = {
+  mounted: function() {
+    let googleMapsScript = document.createElement("script");
+    googleMapsScript.setAttribute("src", "https://maps.googleapis.com/maps/api/js?key=[keyhere]");
+    document.head.appendChild(googleMapsScript);
+  },
   computed: {
     ...mapGetters({
       auth: "auth"
@@ -74,8 +79,8 @@ module.exports = {
       }
       return "";
     },
-    authenticated: function(){
-      if(this.auth){
+    authenticated: function() {
+      if (this.auth) {
         return this.auth.authenticated;
       }
       return false;
