@@ -1,52 +1,27 @@
 <template>
 
   <body>
-    <el-container class="container">
-      <el-header class="ss-header">
-        Stay safe
-        <el-button @click="logout()">Logout</el-button>
-      </el-header>
-      <el-container class="ss-body">
-        <el-aside style="width:200px;" class="ss-nav">
-          <el-menu default-active="1" class="el-menu-vertical-demo" :collapse="isCollapse">
-            <el-menu-item v-for="(menuItem,index) in menuItems" :key="menuItem.name" :index="index.toString()" @click="handleClick">
-              <i :class="menuItem.icon"></i>
-              <span slot="title">{{menuItem.name}}</span>
-            </el-menu-item>
-          </el-menu>
-        </el-aside>
-        <el-main class="ss-main">
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
-    <!-- This is app.vue
-        <el-button class="tudor" > tudor
-          <p class="dummy"> dummy</p>
-        </el-button>
-        <button @click="logout()"> logout </button>
-        <div>
-            <router-view></router-view>
-        </div> -->
-
+    <!-- <md-content>
+       <md-icon>menu</md-icon>
+    <md-button @click="logout()">Tudor</md-button>
+    <md-button class="md-icon-button">
+        <md-icon>thumb_up</md-icon>
+      </md-button>
+      <div>
+      <small>Raised</small>
+      <md-button class="md-raised" @click="handleClick(1)">Default</md-button>
+      <md-button class="md-raised" :md-ripple="false" @click="handleClick(0)">Ripple Off</md-button>
+      <md-button class="md-raised md-primary" @click="handleClick(2)">Primary</md-button>
+      <md-button class="md-raised md-accent">Accent</md-button>
+      <md-button class="md-raised" disabled>Disabled</md-button>
+          </div>
+    </md-content> -->
+    <router-view></router-view>
   </body>
 </template>
 
 <style lang="sass" scoped>
-  .container{
-    height: 100vh;
 
-    .ss-header{
-      background-color: #414141;
-      line-height: 60px;
-      color:white;
-    }
-  }
-
-
-  .el-menu{
-    height:100%;
-  }
 </style>
 
 
@@ -83,12 +58,12 @@ module.exports = {
       console.log(key, keyPath);
     },
     handleClick(menu) {
-      if (menu.index == 0) {
+      if (menu == 0) {
         this.$router.push("/");
-      } else if (menu.index == 1) {
+      } else if (menu == 1) {
         this.$router.push("/events");
-      } else if (menu.index == 2) {
-        this.$router.push("/contact");
+      } else if (menu == 2) {
+        this.$router.push("/events");
       }
     }
   }

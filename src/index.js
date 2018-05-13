@@ -1,4 +1,6 @@
 // get vue
+import "babel-core/register"
+import 'babel-polyfill'
 import Vue from 'vue'
 import store from './store'
 import router from './router-config'
@@ -9,13 +11,21 @@ import moment from 'moment'
 // it is used at the end of this file.
 import cleanAfter from 'helpers/clean-after';
 import VueSplit from 'vue-split-panel'
-
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 import './global.scss';
+
+import '../static//materialIcons.css'
+import { MdButton, MdIcon, MdContent, MdDrawer, MdToolbar, MdList, MdListItem } from 'vue-material/dist/components';
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css' // This line here
 Vue.use(VueAxios, axios)
 Vue.use(VueSplit)
-Vue.use(ElementUI)
+Vue.use(MdButton);
+Vue.use(MdIcon);
+Vue.use(MdContent);
+Vue.use(MdToolbar);
+Vue.use(MdList);
+Vue.use(MdListItem);
+
 // launch app in div with id 'app'
 const appInstance = new Vue({
     el: document.getElementById("app"),
@@ -25,5 +35,4 @@ const appInstance = new Vue({
     store
 });
 
-// cleanAfter( appInstance );
 
