@@ -7,6 +7,12 @@ function getTags() {
     });
 }
 
+function createTag(name) {
+    return axios.post(`${store.getters.backendURL}/tags`, {
+        name
+    });
+}
+
 module.exports = {
     getTags
 }

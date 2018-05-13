@@ -7,6 +7,16 @@ function getEvents() {
     });
 }
 
+function createEvent(location, tags, description) {
+    return axios.post(`${store.getters.backendURL}/events`, {
+        priority: `medium`,
+        description,
+        location,
+        performerType: 'ambulance',
+        tags
+    })
+};
+
 module.exports = {
     getEvents
 }
