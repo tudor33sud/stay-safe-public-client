@@ -1,12 +1,12 @@
 import Keycloak from 'keycloak-js';
 import store from '../store';
 
-// let keycloakAuth = new Keycloak('/static/keycloak.json')
-const keycloakAuth = new Keycloak({
-  url: 'http://localhost:8080/auth',
-  realm: 'StaySafe',
-  clientId: 'stay-safe-web-client'
-});
+ let keycloakAuth = new Keycloak('/static/keycloak.json')
+// const keycloakAuth = new Keycloak({
+//   url: 'http://localhost:8080/auth',
+//   realm: 'StaySafe',
+//   clientId: 'stay-safe-web-client',
+// });
 export default (next, roles) => {
   keycloakAuth.init({ onLoad: 'login-required' })
     .success((authenticated) => {
