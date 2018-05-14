@@ -4,8 +4,8 @@
         <md-content v-if="eventLive" class="my-content">
             <md-steppers md-vertical md-linear :md-active-step.sync="activeStepperStep">
                 <md-step id="locationStepper" md-label="Location" md-description="Adjust your current location" :md-done.sync="locationSent">
-                    <googlemap name="example"></googlemap>
-                    <md-button class="md-raised md-primary" @click="setStepDone('locationSent', 'tagsStepper')" v-show="!locationSent">Continue</md-button>
+                    <googlemap name="reportMap" @currentLocationChanged="currentLocationChanged"></googlemap>
+                    <md-button class="md-raised md-primary" @click="setStepDone('locationSent', 'tagsStepper')">Continue</md-button>
                 </md-step>
 
                 <md-step id="tagsStepper" md-label="Tags" :md-done.sync="tagsCompleted">
@@ -57,7 +57,8 @@ module.exports = {
       photoAdded: false,
       locationSent: false,
       tagsCompleted: false,
-      activeStepperStep: "locationStepper"
+      activeStepperStep: "locationStepper",
+      reportStepperCurrentLocation: undefined
     };
   },
   methods: {
@@ -68,6 +69,9 @@ module.exports = {
       if (nextStep) {
         this.activeStepperStep = nextStep;
       }
+    },
+    currentLocationChanged: function(position) {
+      this.reportStepperCurrentLocation = position;
     }
   }
 };
