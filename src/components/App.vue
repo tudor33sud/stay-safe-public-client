@@ -26,7 +26,7 @@
       </md-toolbar>
 
       <md-list>
-        <md-list-item v-for="(menuItem,index) in menuItems" :key="menuItem.name" class="navigation-button" @click="handleClick(index)">
+        <md-list-item v-for="menuItem in menuItems" :key="menuItem.name" class="navigation-button" @click="handleClick(menuItem.name)">
           <md-icon>{{menuItem.icon}}</md-icon>
           <span class="md-list-item-text">{{menuItem.name}}</span>
         </md-list-item>
@@ -39,11 +39,6 @@
 
 
 <style lang="sass" scoped>
-  // .page-container {
-  //   overflow:auto;
-  // }
-
-   // Demo purposes only
   .fixedSizeToolbar{
     min-height:56px;
   }
@@ -60,17 +55,28 @@
 
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import * as eventService from "../service/events";
+const menus = {
+  REPORT: "Report",
+  MY_EVENTS: "My events",
+  CONTACT: "Contact",
+  ACTIVITY: "Activity",
+  ASSIGNMENTS: "Assignments"
+};
 module.exports = {
   mounted: function() {
     let googleMapsScript = document.createElement("script");
-    googleMapsScript.setAttribute("src", "https://maps.googleapis.com/maps/api/js?key=[keyhere]");
+    googleMapsScript.setAttribute(
+      "src",
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyCxFJ9kHyBMxweAlD_2mx_LiXxiDeV7kx4"
+    );
     document.head.appendChild(googleMapsScript);
   },
   computed: {
     ...mapGetters({
-      auth: "auth"
+      auth: "auth",
+      userInfo: "userInfo"
     }),
     username: function() {
       if (this.auth) {
@@ -78,6 +84,17 @@ module.exports = {
         return tokenParsed.name;
       }
       return "";
+    },
+    menuItems: function() {
+      if (this.auth) {
+        if (this.auth.hasResourceRole("ambulance", "stay-safe-api")) {
+          return this.menuItemsAmbulance;
+        }
+        if (this.auth.hasResourceRole("dispatcher", "stay-safe-api")) {
+          return this.menuItemsDispatcher;
+        }
+      }
+      return this.menuItemsUser;
     },
     authenticated: function() {
       if (this.auth) {
@@ -89,33 +106,59 @@ module.exports = {
   data() {
     return {
       showNavigation: false,
-      menuItems: [
+      menuItemsUser: [
         {
-          name: "Report",
+          name: menus.REPORT,
           icon: "add_location"
         },
         {
-          name: "My events",
+          name: menus.MY_EVENTS,
           icon: "event"
         },
         {
-          name: "Contact",
+          name: menus.CONTACT,
+          icon: "contact_support"
+        }
+      ],
+      menuItemsAmbulance: [
+        {
+          name: menus.ACTIVITY,
+          icon: "add_location"
+        },
+        {
+          name: menus.CONTACT,
+          icon: "contact_support"
+        }
+      ],
+      menuItemsDispatcher: [
+        {
+          name: menus.ASSIGNMENTS,
+          icon: "add_location"
+        },
+        {
+          name: menus.CONTACT,
           icon: "contact_support"
         }
       ]
     };
   },
   methods: {
+    ...mapActions(["loadUserInfo"]),
     logout: function() {
+      this.$router.push("/");
       this.$store.state.security.auth.logout();
     },
     handleClick(menu) {
-      if (menu == 0) {
-        this.$router.push("/");
-      } else if (menu == 1) {
+      if (menu == menus.REPORT) {
+        this.$router.push("/report");
+      } else if (menu == menus.MY_EVENTS) {
         this.$router.push("/events");
-      } else if (menu == 2) {
-        this.$router.push("/events");
+      } else if (menu == menus.CONTACT) {
+        this.$router.push("/contact");
+      } else if (menu == menus.ACTIVITY) {
+        this.$router.push("/activity");
+      } else if (menu == menus.ASSIGNMENTS) {
+        this.$router.push("/assignments");
       }
       setTimeout(() => {
         this.showNavigation = false;

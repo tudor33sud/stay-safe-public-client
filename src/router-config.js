@@ -11,6 +11,12 @@ import Components from 'helpers/register-all-components';
 Vue.use(VueRouter)
 const routes = [{
     path: '/',
+    component: Components.RouterDefaultView,
+    meta: {
+        requiresAuth: true
+    }
+}, {
+    path: '/report',
     component: Components.Report,
     meta: {
         requiresAuth: true
@@ -22,7 +28,29 @@ const routes = [{
     meta: {
         requiresAuth: true
     }
-}];
+},
+{
+    path: '/activity',
+    component: Components.Activity,
+    meta: {
+        requiresAuth: true
+    }
+},
+{
+    path: '/assignments',
+    component: Components.Assignments,
+    meta: {
+        requiresAuth: true
+    }
+},
+{
+    path: '/contact',
+    component: Components.Contact,
+    meta: {
+        requiresAuth: true
+    }
+},
+];
 
 
 const router = new VueRouter({
