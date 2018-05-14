@@ -1,7 +1,7 @@
 <template>
     <div>
-
-        <md-content class="my-content">
+        <h2 style="padding:24px" class="md-headline" v-if="!eventLive">You don't have any events live. Please start one </h2>
+        <md-content v-if="eventLive" class="my-content">
             <md-steppers md-vertical md-linear :md-active-step.sync="activeStepperStep">
                 <md-step id="locationStepper" md-label="Location" md-description="Adjust your current location" :md-done.sync="locationSent">
                     <googlemap name="example"></googlemap>
