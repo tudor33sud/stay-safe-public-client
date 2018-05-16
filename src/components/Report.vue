@@ -1,80 +1,59 @@
 <template>
-    <div>
-        <md-empty-state v-if="!eventLive && !stepperFinished" style="margin-top:32vh;" md-label="Any danger nearby?">
-            <span @click="eventLive = !eventLive" class="glowing-item">
-                <md-icon style="color:white;font-size:46px">local_hospital</md-icon>
-            </span>
-        </md-empty-state>
-        <!-- <transition name="fade" mode="in-out"> -->
-        <md-empty-state class="md-primary" v-if="stepperFinished" style="margin-top:24vh;" md-label="All set. Wanna go live?" md-icon="check_circle">
-            <md-button class="md-primary stepper-next">Go Live</md-button>
-        </md-empty-state>
-        <!-- </transition> -->
-        <!-- <transition name="fade" mode="in-out"> -->
-            <md-content v-if="eventLive" class="my-content">
-                <md-steppers md-vertical md-linear :md-active-step.sync="activeStepperStep">
-                    <md-step id="locationStepper" md-label="Location" md-description="Adjust your current location" :md-done.sync="locationSent" :md-editable="false">
-                        <googlemap name="reportMap" @currentLocationChanged="currentLocationChanged"></googlemap>
-                        <div class="md-layout " :class="continueStepAlignment">
-                            <md-button class="md-dense md-primary stepper-next" @click="advanceStepHandler('locationSent', 'tagsStepper')">Continue</md-button>
-                        </div>
-                    </md-step>
+  <div>
+    <md-empty-state v-if="!eventLive && !stepperFinished" style="margin-top:32vh;" md-label="Any danger nearby?">
+      <span @click="eventLive = !eventLive" class="glowing-item">
+        <md-icon style="color:white;font-size:46px">local_hospital</md-icon>
+      </span>
+    </md-empty-state>
+    <md-empty-state class="md-primary" v-if="stepperFinished" style="margin-top:24vh;" md-label="All set. Wanna go live?" md-icon="check_circle">
+      <md-button class="md-primary stepper-next">Go Live</md-button>
+    </md-empty-state>
 
-                    <md-step id="tagsStepper" md-label="Tags" :md-done.sync="tagsCompleted" :md-editable="false">
-                        <md-field>
-                            <label for="tags">Tags</label>
-                            <md-select v-model="selectedTags" name="tags" id="tags" multiple>
-                                <md-option v-for="tag in tags" :key="tag.id" :value="tag.id">{{tag.name}}</md-option>
-                            </md-select>
-                        </md-field>
-                        <div class="md-layout" :class="continueStepAlignment">
-                            <md-button class="md-dense md-primary stepper-next" @click="advanceStepHandler('tagsCompleted', 'addPhotoStepper')">Continue</md-button>
-                        </div>
-                        <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showNoTagsSelectedError" md-persistent>
-                            <span>You must select at least one tag!</span>
-                            <md-button class="md-accent" @click="showNoTagsSelectedError = false">Dismiss</md-button>
-                        </md-snackbar>
-                        <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventError" md-persistent>
-                            <span>Oops! There was an error while sending your event!</span>
-                            <md-button class="md-accent" @click="showEventError = false">Dismiss</md-button>
-                        </md-snackbar>
-                    </md-step>
+    <md-content v-if="eventLive" class="my-content">
+      <md-steppers md-vertical md-linear :md-active-step.sync="activeStepperStep">
+        <md-step id="locationStepper" md-label="Location" md-description="Adjust your current location" :md-done.sync="locationSent" :md-editable="false">
+          <googlemap name="reportMap" @currentLocationChanged="currentLocationChanged"></googlemap>
+          <div class="md-layout " :class="continueStepAlignment">
+            <md-button class="md-dense md-primary stepper-next" @click="advanceStepHandler('locationSent', 'tagsStepper')">Continue</md-button>
+          </div>
+        </md-step>
 
-                    <md-step id="addPhotoStepper" md-label="Add a photo" md-description="Optional" :md-done.sync="photoAdded" :md-editable="false">
-                        <md-field>
-                            <label>Photo</label>
-                            <md-file v-model="currentFileSelection" @md-change="onFileSelection" />
-                        </md-field>
-                        <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showUploadError" md-persistent>
-                            <span>There was an error uploading your file</span>
-                            <md-button class="md-accent" @click="showUploadError = false">Dismiss</md-button>
-                        </md-snackbar>
-                        <div class="md-layout" :class="continueStepAlignment">
-                            <md-button class="md-dense md-accent stepper-next" @click="advanceStepHandler('photoAdded', 'endStepper')">Finish</md-button>
-                        </div>
-                    </md-step>
-                </md-steppers>
-            </md-content>
-        <!-- </transition> -->
-        <!-- <md-speed-dial class="md-bottom-right" md-direction="top">
-            <md-speed-dial-target class="md-accent">
-                <md-icon class="md-morph-initial">add</md-icon>
-                <md-icon class="md-morph-final">close</md-icon>
-            </md-speed-dial-target>
+        <md-step id="tagsStepper" md-label="Tags" :md-done.sync="tagsCompleted" :md-editable="false">
+          <md-field>
+            <label for="tags">Tags</label>
+            <md-select v-model="selectedTags" name="tags" id="tags" multiple>
+              <md-option v-for="tag in tags" :key="tag.id" :value="tag.id">{{tag.name}}</md-option>
+            </md-select>
+          </md-field>
+          <div class="md-layout" :class="continueStepAlignment">
+            <md-button class="md-dense md-primary stepper-next" @click="advanceStepHandler('tagsCompleted', 'addPhotoStepper')">Continue</md-button>
+          </div>
+          <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showNoTagsSelectedError" md-persistent>
+            <span>You must select at least one tag!</span>
+            <md-button class="md-accent" @click="showNoTagsSelectedError = false">Dismiss</md-button>
+          </md-snackbar>
+          <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventError" md-persistent>
+            <span>Oops! There was an error while sending your event!</span>
+            <md-button class="md-accent" @click="showEventError = false">Dismiss</md-button>
+          </md-snackbar>
+        </md-step>
 
-            <md-speed-dial-content>
-                <md-button class="md-icon-button" @click="eventLive = !eventLive">
-                    <md-icon>add_location</md-icon>
-                    <md-tooltip md-direction="left">Add Report</md-tooltip>
-                </md-button>
-
-                <md-button class="md-icon-button">
-                    <md-icon>local_offer</md-icon>
-                    <md-tooltip md-direction="left">Add Custom Tag</md-tooltip>
-                </md-button>
-            </md-speed-dial-content>
-        </md-speed-dial> -->
-    </div>
+        <md-step id="addPhotoStepper" md-label="Add a photo" md-description="Optional" :md-done.sync="photoAdded" :md-editable="false">
+          <md-field>
+            <label>Photo</label>
+            <md-file v-model="currentFileSelection" @md-change="onFileSelection" />
+          </md-field>
+          <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showUploadError" md-persistent>
+            <span>There was an error uploading your file</span>
+            <md-button class="md-accent" @click="showUploadError = false">Dismiss</md-button>
+          </md-snackbar>
+          <div class="md-layout" :class="continueStepAlignment">
+            <md-button class="md-dense md-accent stepper-next" @click="advanceStepHandler('photoAdded', 'endStepper')">Finish</md-button>
+          </div>
+        </md-step>
+      </md-steppers>
+    </md-content>
+  </div>
 
 </template>
 <style lang="sass" scoped>
@@ -202,7 +181,9 @@ module.exports = {
       data.append("image", file);
       eventService
         .uploadAttachment(this.createdEvent.id, data, this.onUploadProgress)
-        .then(response => {})
+        .then(response => {
+          this.createdEvent = response.data;
+        })
         .catch(err => {
           this.showUploadError = true;
         });
