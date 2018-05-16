@@ -8,15 +8,24 @@ function getEvents() {
 }
 
 function createEvent(location, tags, description) {
+    const locationDTO = `${location.lat},${location.lng}`
     return axios.post(`${store.getters.backendURL}/events`, {
         priority: `medium`,
         description,
-        location,
+        location: locationDTO,
         performerType: 'ambulance',
         tags
     })
 };
 
+function uploadAttachment(eventId, data, onUploadProgress = () => { }) {
+    return axios.put(`${store.getters.backendURL}/events/${eventId}/attachments`, data, {
+        onUploadProgress
+    });
+}
+
 module.exports = {
-    getEvents
+    getEvents,
+    uploadAttachment,
+    createEvent
 }
