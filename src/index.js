@@ -14,10 +14,11 @@ import VueSplit from 'vue-split-panel'
 import './global.scss';
 
 import '../static//materialIcons.css'
-import { MdDivider,MdButton, MdIcon, MdContent, MdDrawer, MdToolbar, MdList, MdListItem, MdAvatar,MdMenu , MdSpeedDial,MdTooltip, MdEmptyState, MdSteppers, MdAutocomplete,MdInput,MdProgress,MdField, MdCheckbox} from 'vue-material/dist/components';
+import { MdLayout,MdDivider,MdButton, MdIcon, MdContent, MdDrawer, MdToolbar, MdList, MdListItem, MdAvatar,MdMenu , MdSpeedDial,MdTooltip, MdEmptyState, MdSteppers, MdAutocomplete,MdInput,MdProgress,MdField, MdCheckbox,MdSnackbar} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
 import VueMaterial from 'vue-material'
+Vue.use(MdLayout);
 Vue.use(VueAxios, axios)
 Vue.use(VueSplit)
 Vue.use(MdButton);
@@ -33,10 +34,11 @@ Vue.use(MdSpeedDial);
 Vue.use(MdTooltip);
 Vue.use(MdEmptyState);
 Vue.use(MdSteppers)
-
+Vue.use(MdSnackbar);
 Vue.use(MdField);
 Vue.use(MdProgress);
 Vue.use(MdCheckbox);
+
 // launch app in div with id 'app'
 const appInstance = new Vue({
     el: document.getElementById("app"),
