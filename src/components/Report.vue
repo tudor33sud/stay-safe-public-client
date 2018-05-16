@@ -218,7 +218,6 @@ module.exports = {
             "My event"
           )
           .then(response => {
-            debugger;
             this.createdEvent = response.data;
             this.setStepDone(step, nextStep);
           })
