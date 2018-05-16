@@ -12,7 +12,16 @@
 
 <script>
 export default {
-  props: ["name"],
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    markers: {
+      type: Array,
+      default: []
+    }
+  },
   data: function() {
     return {
       mapName: `${this.name}-map`,
@@ -36,6 +45,15 @@ export default {
         this.locationErrorHandler
       );
     }
+
+    this.markers.forEach(marker => {
+      const markerPosition = new google.maps.LatLng(marker.lat, marker.lng);
+      const gmapMarker = new google.maps.Marker({
+        position: markerPosition,
+        map: this.map,
+        title: marker.title ? marker.title : undefined
+      });
+    });
   },
   methods: {
     locationErrorHandler: function(error) {
