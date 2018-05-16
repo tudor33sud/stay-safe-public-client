@@ -3,8 +3,8 @@
 </template>
 <style scoped>
 .google-map {
-  min-width: 400px;
-  height: 600px;
+  /* min-width: 400px; */
+  height: 70vh;
   margin: 0 auto;
   background: gray;
 }
@@ -42,9 +42,15 @@ export default {
       console.log(error);
     },
     locationSuccessHandler: function(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const newCenter = new google.maps.LatLng(latitude, longitude);
+      this.currentPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      this.emitLocationChangedEvent(this.currentPosition);
+      const newCenter = new google.maps.LatLng(
+        this.currentPosition.lat,
+        this.currentPosition.lng
+      );
       this.currentPositionMarker = new google.maps.Marker({
         position: newCenter,
         map: this.map,
@@ -60,10 +66,16 @@ export default {
         this.currentPositionMarker,
         "dragend",
         () => {
-          this.currentPosition = this.currentPositionMarker.getPosition();
-          this.$emit("currentLocationChanged", this.currentPosition);
+          this.currentPosition = {
+            lat: this.currentPositionMarker.getPosition().lat(),
+            lng: this.currentPositionMarker.getPosition().lng()
+          };
+          this.emitLocationChangedEvent(this.currentPosition);
         }
       );
+    },
+    emitLocationChangedEvent(position) {
+      this.$emit("currentLocationChanged", position);
     }
   }
 };
