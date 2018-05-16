@@ -30,8 +30,8 @@ const routes = [{
     }
 },
 {
-    path: '/activity',
-    component: Components.Activity,
+    path: '/tracking',
+    component: Components.Tracking,
     meta: {
         requiresAuth: true
     }

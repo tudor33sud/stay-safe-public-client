@@ -61,7 +61,7 @@ const menus = {
   REPORT: "Report",
   MY_EVENTS: "My events",
   CONTACT: "Contact",
-  ACTIVITY: "Activity",
+  TRACKING: "Tracking",
   ASSIGNMENTS: "Assignments"
 };
 module.exports = {
@@ -128,7 +128,7 @@ module.exports = {
       ],
       menuItemsAmbulance: [
         {
-          name: menus.ACTIVITY,
+          name: menus.TRACKING,
           icon: "add_location"
         },
         {
@@ -161,8 +161,8 @@ module.exports = {
         this.$router.push("/events");
       } else if (menu == menus.CONTACT) {
         this.$router.push("/contact");
-      } else if (menu == menus.ACTIVITY) {
-        this.$router.push("/activity");
+      } else if (menu == menus.TRACKING) {
+        this.$router.push("/tracking");
       } else if (menu == menus.ASSIGNMENTS) {
         this.$router.push("/assignments");
       }
