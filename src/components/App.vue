@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container md-layout-column">
+  <div class="page-container">
     <md-toolbar class="md-primary fixedSizeToolbar">
       <md-button class="md-icon-button" @click="showNavigation = true">
         <md-icon>menu</md-icon>
@@ -66,6 +66,12 @@ const menus = {
 };
 module.exports = {
   mounted: function() {
+    //add viewport meta tag
+    let metaTag = document.createElement("meta");
+    metaTag.setAttribute("name", "viewport");
+    metaTag.setAttribute("content", "width=device-width,initial-scale=1.0");
+    document.head.appendChild(metaTag);
+    //add google maps scripts
     let googleMapsScript = document.createElement("script");
     googleMapsScript.setAttribute(
       "src",
