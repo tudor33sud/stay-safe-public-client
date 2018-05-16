@@ -1,13 +1,9 @@
 <template>
     <div>
         <div class="md-layout">
-            <div class="cards-layout" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
+            <div v-if="!trackingEvent" class="cards-layout" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
                 <md-card class="md-card-example">
                     <md-card-area md-inset>
-                        <!-- <md-card-media md-ratio="16:9">
-                            <img src="https://images.unsplash.com/photo-1516841273335-e39b37888115?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1c3cfbc7fc9f2c648d415fc8a97ef74d&auto=format&fit=crop&w=1331&q=80" alt="Coffee House">
-                        </md-card-media> -->
-
                         <md-card-header>
                             <h2 class="md-title">{{event.requester.display}}</h2>
                             <div class="md-subhead">
@@ -15,10 +11,6 @@
                                 <span>2 miles</span>
                             </div>
                         </md-card-header>
-
-                        <!-- <md-card-content>
-                            Event description (if available)
-                        </md-card-content> -->
                     </md-card-area>
 
                     <md-card-content>
@@ -39,10 +31,13 @@
                     </md-card-content>
 
                     <md-card-actions>
-                        <md-button class="full-width" :md-ripple="false">Accept</md-button>
+                        <md-button class="full-width" @click="performEvent(event.id)" :md-ripple="false">Accept</md-button>
                     </md-card-actions>
                 </md-card>
 
+            </div>
+            <div class="md-layout" v-if="trackingEvent">
+                <trackingmap :event="selectedEvent"></trackingmap>
             </div>
         </div>
     </div>
@@ -119,7 +114,9 @@ module.exports = {
   data() {
     return {
       trackingWS: null,
-      trackingEvents: []
+      trackingEvents: [],
+      trackingEvent: false,
+      selectedEvent: null
     };
   },
   methods: {
@@ -136,7 +133,7 @@ module.exports = {
         `ws://localhost:8999?auth=${this.auth.token}&eventId=${eventId}`
       );
       this.trackingWS.onopen = e => {
-        console.log('opened')
+        console.log("opened");
       };
       this.trackingWS.onclose = e => {
         alert("ws closed");
@@ -164,7 +161,10 @@ module.exports = {
     performEvent: function(eventId) {
       trackingService
         .performEvent(eventId)
-        .then(response => {})
+        .then(response => {
+          this.selectedEvent = response.data;
+          this.trackingEvent = true;
+        })
         .catch(err => {
           console.log(err);
         });
