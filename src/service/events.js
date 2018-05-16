@@ -24,8 +24,18 @@ function uploadAttachment(eventId, data, onUploadProgress = () => { }) {
     });
 }
 
+function getLatLon(event) {
+    const latlonString = event.location.latlon;
+    const [lat, lon] = latlonString.split(',');
+    return {
+        lat,
+        lng:lon
+    }
+}
+
 module.exports = {
     getEvents,
     uploadAttachment,
-    createEvent
+    createEvent,
+    getLatLon
 }
