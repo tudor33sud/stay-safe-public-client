@@ -4,6 +4,7 @@
 <style scoped>
 .google-map {
   /* min-width: 400px; */
+  width: 100%;
   height: 70vh;
   margin: 0 auto;
   background: gray;
@@ -19,7 +20,17 @@ export default {
     },
     markers: {
       type: Array,
-      default: []
+      default: function() {
+        return [];
+      }
+    },
+    currentLocationDraggable: {
+      type: Boolean,
+      default: true
+    },
+    syncGeolocation: {
+      type: Boolean,
+      default: false
     }
   },
   data: function() {
@@ -27,24 +38,27 @@ export default {
       mapName: `${this.name}-map`,
       map: undefined,
       currentPositionMarker: undefined,
-      currentPosition: undefined
+      currentPosition: undefined,
+      locationWatcher: null
     };
   },
   mounted: function() {
+    if (!navigator.geolocation) {
+      alert("Sorry you do not support geolocation");
+      return;
+    }
     const element = document.getElementById(this.mapName);
     const options = {
       center: new google.maps.LatLng(45.6428907, 25.5916801),
-      zoom: 15
+      zoom: 10
     };
 
     this.map = new google.maps.Map(element, options);
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        this.locationSuccessHandler,
-        this.locationErrorHandler
-      );
-    }
+    navigator.geolocation.getCurrentPosition(
+      this.locationSuccessHandler,
+      this.locationErrorHandler
+    );
 
     this.markers.forEach(marker => {
       const markerPosition = new google.maps.LatLng(marker.lat, marker.lng);
@@ -60,11 +74,10 @@ export default {
       console.log(error);
     },
     locationSuccessHandler: function(position) {
-      this.currentPosition = {
+      this.changeCurrentLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      };
-      this.emitLocationChangedEvent(this.currentPosition);
+      });
       const newCenter = new google.maps.LatLng(
         this.currentPosition.lat,
         this.currentPosition.lng
@@ -73,7 +86,7 @@ export default {
         position: newCenter,
         map: this.map,
         title: "Your current position",
-        draggable: true,
+        draggable: this.currentLocationDraggable,
         animation: google.maps.Animation.DROP
       });
 
@@ -85,15 +98,52 @@ export default {
         this.currentPositionMarker,
         "dragend",
         () => {
-          this.currentPosition = {
+          this.changeCurrentLocation({
             lat: this.currentPositionMarker.getPosition().lat(),
             lng: this.currentPositionMarker.getPosition().lng()
-          };
-          this.emitLocationChangedEvent(this.currentPosition);
+          });
         }
       );
+
+      if (this.syncGeolocation) {
+        const options = {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: 0
+        };
+        this.locationWatcher = navigator.geolocation.watchPosition(
+          this.onLocationWatchSuccess,
+          this.onLocationWatchError,
+          options
+        );
+        //test method
+        // setInterval(() => {
+        //   this.onLocationWatchSuccess({
+        //     coords: {
+        //       latitude: this.currentPosition.lat + 0.0001,
+        //       longitude: this.currentPosition.lng + 0.0001
+        //     }
+        //   });
+        // }, 1000);
+      }
     },
-    emitLocationChangedEvent(position) {
+    onLocationWatchSuccess: function(position) {
+      const latLngPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      this.changeCurrentLocation(latLngPosition);
+      const changedMarkerPosition = new google.maps.LatLng(
+        latLngPosition.lat,
+        latLngPosition.lng
+      );
+      this.currentPositionMarker.setPosition(changedMarkerPosition);
+    },
+    onLocationWatchError: function(err) {
+      console.log(err);
+    },
+    changeCurrentLocation: function(position) {
+      this.currentPosition = position;
       this.$emit("currentLocationChanged", position);
     }
   }
