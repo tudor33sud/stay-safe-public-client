@@ -55,7 +55,8 @@ export default {
         position: newCenter,
         map: this.map,
         title: "Your current position",
-        draggable: true
+        draggable: true,
+        animation: google.maps.Animation.DROP
       });
 
       this.map.panTo(newCenter);
