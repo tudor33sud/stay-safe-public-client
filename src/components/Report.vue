@@ -1,15 +1,16 @@
 <template>
   <div>
-    <md-empty-state v-if="!eventLive && !stepperFinished" style="margin-top:32vh;" md-label="Any danger nearby?">
-      <span @click="eventLive = !eventLive" class="glowing-item">
+    <md-empty-state v-if="!creatingEvent && !stepperFinished" style="margin-top:32vh;" md-label="Any danger nearby?">
+      <span @click="creatingEvent = !creatingEvent" class="glowing-item">
         <md-icon style="color:white;font-size:46px">local_hospital</md-icon>
       </span>
     </md-empty-state>
-    <md-empty-state class="md-primary" v-if="stepperFinished" style="margin-top:24vh;" md-label="All set. Wanna go live?" md-icon="check_circle">
-      <md-button class="md-primary stepper-next">Go Live</md-button>
+    <md-empty-state class="md-primary" v-if="stepperFinished && !eventLive" style="margin-top:18vh;" md-label="All set. Wanna go live?" md-icon="check_circle">
+      <md-button class="md-primary stepper-next" @click="goLive()">Go Live</md-button>
+      <md-button @click="resetComponent()" class="stepper-next">Back</md-button>
     </md-empty-state>
 
-    <md-content v-if="eventLive" class="my-content">
+    <md-content v-if="creatingEvent" class="my-content">
       <md-steppers md-vertical md-linear :md-active-step.sync="activeStepperStep">
         <md-step id="locationStepper" md-label="Location" md-description="Adjust your current location" :md-done.sync="locationSent" :md-editable="false">
           <googlemap name="reportMap" @currentLocationChanged="currentLocationChanged"></googlemap>
@@ -53,6 +54,9 @@
         </md-step>
       </md-steppers>
     </md-content>
+    <div style="height:100%;" v-if="eventLive">
+      <userlivemap :event="createdEvent"></userlivemap>
+    </div>
   </div>
 
 </template>
@@ -153,25 +157,32 @@ import * as eventService from "../service/events";
 import * as tagsService from "../service/tags";
 module.exports = {
   data() {
-    return {
-      eventLive: false,
-      photoAdded: false,
-      locationSent: false,
-      tagsCompleted: false,
-      currentFileSelection: null,
-      activeStepperStep: "locationStepper",
-      reportStepperCurrentLocation: undefined,
-      selectedTags: [],
-      tags: [],
-      showUploadError: false,
-      showNoTagsSelectedError: false,
-      showEventError: false,
-      continueStepAlignment: "md-alignment-center-left",
-      createdEvent: undefined,
-      stepperFinished: false
-    };
+    return this.initialData();
   },
   methods: {
+    initialData() {
+      return {
+        eventLive: false,
+        creatingEvent: false,
+        photoAdded: false,
+        locationSent: false,
+        tagsCompleted: false,
+        currentFileSelection: null,
+        activeStepperStep: "locationStepper",
+        reportStepperCurrentLocation: undefined,
+        selectedTags: [],
+        tags: [],
+        showUploadError: false,
+        showNoTagsSelectedError: false,
+        showEventError: false,
+        continueStepAlignment: "md-alignment-center-left",
+        createdEvent: undefined,
+        stepperFinished: false
+      };
+    },
+    resetComponent: function() {
+      Object.assign(this.$data, this.initialData());
+    },
     onFileSelection(fileList) {
       if (!this.createdEvent) {
         throw new Error("no event in current context");
@@ -197,7 +208,7 @@ module.exports = {
     advanceStepHandler: function(step, nextStep) {
       if (nextStep == "endStepper") {
         this.setStepDone(step, nextStep);
-        this.eventLive = false;
+        this.creatingEvent = false;
         this.stepperFinished = true;
         return;
       }
@@ -236,12 +247,14 @@ module.exports = {
     },
     currentLocationChanged: function(position) {
       this.reportStepperCurrentLocation = position;
-      console.log(this.reportStepperCurrentLocation);
     },
     getTags: function() {
       tagsService.getTags().then(response => {
         this.tags = response.data;
       });
+    },
+    goLive: function() {
+      this.eventLive = true;
     }
   }
 };
