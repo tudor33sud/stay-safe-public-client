@@ -36,9 +36,9 @@
                 </md-card>
 
             </div>
-            <div class="md-layout" v-if="trackingEvent">
-                <trackingmap :event="selectedEvent"></trackingmap>
-            </div>
+        </div>
+        <div style="height:100%" v-if="trackingEvent">
+            <trackingmap :event="selectedEvent"></trackingmap>
         </div>
     </div>
 
