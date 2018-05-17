@@ -24,18 +24,25 @@ function uploadAttachment(eventId, data, onUploadProgress = () => { }) {
     });
 }
 
+function getAttachment(eventId, attachmentId) {
+    return axios.request({
+        url: `${store.getters.backendURL}/events/${eventId}/attachments/${attachmentId}`
+    })
+}
+
 function getLatLon(event) {
     const latlonString = event.location.latlon;
     const [lat, lon] = latlonString.split(',');
     return {
         lat,
-        lng:lon
+        lng: lon
     }
 }
 
 module.exports = {
     getEvents,
     uploadAttachment,
+    getAttachment,
     createEvent,
     getLatLon
 }
