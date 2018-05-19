@@ -38,6 +38,13 @@ module.exports = {
   mounted() {
     this.initWebSocket(this.event.id);
   },
+  beforeDestroy() {
+    if (this.trackingWS != null) {
+      if (this.trackingWS.readyState == this.trackingWS.OPEN) {
+        this.trackingWS.close();
+      }
+    }
+  },
   data() {
     return {
       trackingWS: null,

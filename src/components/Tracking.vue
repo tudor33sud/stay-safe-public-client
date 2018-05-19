@@ -103,8 +103,15 @@ import * as trackingService from "../service/tracking";
 import moment from "moment";
 module.exports = {
   mounted() {
-    //this.initWebSocket();
     this.getEvents();
+    this.eventsPolling = setInterval(() => {
+      if (!this.trackingEvent) {
+        this.getEvents();
+      }
+    }, 4000);
+  },
+  beforeDestroy() {
+    clearInterval(this.eventsPolling);
   },
   computed: {
     ...mapGetters({
@@ -116,7 +123,8 @@ module.exports = {
       trackingWS: null,
       trackingEvents: [],
       trackingEvent: false,
-      selectedEvent: null
+      selectedEvent: null,
+      eventsPolling: undefined
     };
   },
   methods: {
@@ -127,26 +135,6 @@ module.exports = {
         "md-medium-size-50",
         "md-xsmall-size-100"
       ];
-    },
-    initWebSocket(eventId) {
-      this.trackingWS = new WebSocket(
-        `ws://localhost:8999?auth=${this.auth.token}&eventId=${eventId}`
-      );
-      this.trackingWS.onopen = e => {
-        console.log("opened");
-      };
-      this.trackingWS.onclose = e => {
-        alert("ws closed");
-      };
-      this.trackingWS.onmessage = message => {
-        this.onTrackingMessage(message);
-      };
-    },
-    onTrackingMessage: function(message) {
-      console.log(message);
-    },
-    handleGetEvents: function(newEvents) {
-      this.trackingEvents = newEvents;
     },
     getEvents: function() {
       trackingService
