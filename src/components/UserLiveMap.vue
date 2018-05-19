@@ -74,7 +74,6 @@ module.exports = {
     onMessage: function(message) {
       try {
         const parsed = JSON.parse(message.data);
-        debugger;
         if (parsed.type === "ambLocUpdate") {
           this.ambulanceMarkerObject = [getMarkerFromParsedMessage(parsed)];
         }

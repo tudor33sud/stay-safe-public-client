@@ -6,7 +6,6 @@ function sendLocation(ws, lat, lng) {
             lng
         }
     };
-    console.log(sendLocationPayload);
     ws.send(JSON.stringify(sendLocationPayload));
 }
 

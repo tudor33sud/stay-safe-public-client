@@ -52,6 +52,10 @@ export default {
       default: undefined
     }
   },
+  destroyed() {
+    clearInterval(this.geolocationInterval);
+    clearInterval(this.locationWatcher);
+  },
   data: function() {
     return {
       mapName: `${this.name}-map`,
@@ -60,7 +64,8 @@ export default {
       currentPosition: undefined,
       locationWatcher: null,
       gmapSyncedMarkers: [],
-      gmapStaticMarkers: []
+      gmapStaticMarkers: [],
+      geolocationInterval: null
     };
   },
   mounted: function() {
@@ -80,7 +85,8 @@ export default {
       }
       navigator.geolocation.getCurrentPosition(
         this.locationSuccessHandler,
-        this.locationErrorHandler
+        this.locationErrorHandler,
+        { timeout: 5000 }
       );
     }
     this.registerMarkers(this.markers);
@@ -125,19 +131,16 @@ export default {
       this.addPanOnClickListener(this.currentPositionMarker);
 
       if (this.syncGeolocation) {
-        //change this to reuse getPosition instead of the watcher
-        const options = {
-          enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: 0
-        };
-        this.locationWatcher = navigator.geolocation.watchPosition(
-          this.onLocationWatchSuccess,
-          this.onLocationWatchError,
-          options
-        );
+
+        this.locationWatcher = setInterval(() => {
+          // navigator.geolocation.getCurrentPosition(
+          //   this.onLocationWatchSuccess,
+          //   this.onLocationWatchError,
+          //   { timeout: 5000 }
+          // );
+        }, 4000);
         //test method
-        setInterval(() => {
+        const geolocationInterval = setInterval(() => {
           this.onLocationWatchSuccess({
             coords: {
               latitude: this.currentPosition.lat + 0.0001,

@@ -34,7 +34,7 @@ const mutations = {
         state.auth = keycloakAuth
         // axios.defaults.headers.common = { 'Authorization': 'Bearer ' + keycloakAuth.token }
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + keycloakAuth.token
-        console.log('Token', axios.defaults.headers.common['Authorization']);
+        // console.log('Token', axios.defaults.headers.common['Authorization']);
     },
     [types.ADD_USER_INFO](state, userInfo) {
         state.userInfo = userInfo;

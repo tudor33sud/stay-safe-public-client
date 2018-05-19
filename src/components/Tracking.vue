@@ -38,7 +38,7 @@
             </div>
         </div>
         <div style="height:100%" v-if="trackingEvent">
-            <trackingmap :event="selectedEvent"></trackingmap>
+            <trackingmap :trackingEvent="trackingEvent" :event="selectedEvent"></trackingmap>
         </div>
     </div>
 

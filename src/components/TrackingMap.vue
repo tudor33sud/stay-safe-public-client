@@ -1,5 +1,5 @@
 <template>
-  <googlemap name="tracking" :currentLocationDraggable="false" :geolocationIcon="getAmbulanceIcon()" :markers="[targetMarker]" :syncGeolocation="true" @currentLocationChanged="currentLocationChanged">
+  <googlemap v-if="trackingEvent" name="tracking" :currentLocationDraggable="false" :geolocationIcon="getAmbulanceIcon()" :markers="[targetMarker]" :syncGeolocation="true" @currentLocationChanged="currentLocationChanged">
   </googlemap>
 </template>
 
@@ -18,6 +18,10 @@ module.exports = {
   props: {
     event: {
       type: Object,
+      required: true
+    },
+    trackingEvent: {
+      type: Boolean,
       required: true
     }
   },
@@ -61,7 +65,6 @@ module.exports = {
     currentLocationChanged: function(position) {
       this.currentLocation = position;
       if (this.trackingWS.readyState !== this.trackingWS.OPEN) {
-        console.log("not connected");
         return;
       }
       this.sendLocation(position);
