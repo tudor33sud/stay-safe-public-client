@@ -1,5 +1,5 @@
 <template>
-  <googlemap v-if="trackingEvent" name="tracking" :currentLocationDraggable="false" :geolocationIcon="getAmbulanceIcon()" :markers="[targetMarker]" :syncGeolocation="true" @currentLocationChanged="currentLocationChanged">
+  <googlemap name="tracking" :currentLocationDraggable="false" :geolocationIcon="getAmbulanceIcon()" :markers="[targetMarker]" :syncGeolocation="true" @currentLocationChanged="currentLocationChanged">
   </googlemap>
 </template>
 
@@ -18,10 +18,6 @@ module.exports = {
   props: {
     event: {
       type: Object,
-      required: true
-    },
-    trackingEvent: {
-      type: Boolean,
       required: true
     }
   },
