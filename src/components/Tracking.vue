@@ -38,8 +38,10 @@
 
       </div>
     </div>
-    <div style="height:100%" v-if="trackingEvent">
-      <trackingmap :event="selectedEvent"></trackingmap>
+    <div style="height:100%;position:relative;" v-if="trackingEvent">
+      <div style="height: 100%">
+        <trackingmap :event="selectedEvent" @eventFinished="untrackEvent"></trackingmap>
+      </div>
     </div>
   </div>
 
@@ -115,7 +117,6 @@ module.exports = {
         this.trackEvent(response.data[0]);
       }
       this.eventsPolling = setInterval(() => {
-        debugger;
         if (!this.trackingEvent) {
           this.getEvents();
         }
@@ -167,7 +168,7 @@ module.exports = {
         .getTrackingEvents(active)
         .then(response => {
           const events = response.data;
-          if (active == true) {
+          if (active == true || response.status == 204) {
             this.trackingEvents = [];
             return response;
           }
@@ -214,7 +215,7 @@ module.exports = {
       this.selectedEvent = event;
       this.trackingEvent = true;
     },
-    untrackEvent: function() {
+    untrackEvent: function(eventId) {
       this.selectedEvent = undefined;
       this.trackingEvent = false;
     },
