@@ -72,7 +72,13 @@ export default {
     const element = document.getElementById(this.mapName);
     const options = {
       center: new google.maps.LatLng(45.6428907, 25.5916801),
-      zoom: 5
+      zoom: 5,
+      zoomControl: false,
+      mapTypeControl: false,
+      scaleControl: false,
+      streetViewControl: false,
+      rotateControl: false,
+      fullscreenControl: true
     };
 
     this.map = new google.maps.Map(element, options);
@@ -131,7 +137,6 @@ export default {
       this.addPanOnClickListener(this.currentPositionMarker);
 
       if (this.syncGeolocation) {
-
         this.locationWatcher = setInterval(() => {
           // navigator.geolocation.getCurrentPosition(
           //   this.onLocationWatchSuccess,
