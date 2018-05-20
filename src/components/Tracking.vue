@@ -1,47 +1,47 @@
 <template>
-    <div>
-        <div class="md-layout">
-            <div v-if="!trackingEvent" class="cards-layout" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
-                <md-card class="md-card-example">
-                    <md-card-area md-inset>
-                        <md-card-header>
-                            <h2 class="md-title">{{event.requester.display}}</h2>
-                            <div class="md-subhead">
-                                <md-icon>location_on</md-icon>
-                                <span>{{event.distance? `${event.distance}km`:`N/A`}}</span>
-                            </div>
-                        </md-card-header>
-                    </md-card-area>
+  <div>
+    <div class="md-layout">
+      <div v-if="!trackingEvent" class="cards-layout" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
+        <md-card class="md-card-example">
+          <md-card-area md-inset>
+            <md-card-header>
+              <h2 class="md-title">{{event.requester.display}}</h2>
+              <div class="md-subhead">
+                <md-icon>location_on</md-icon>
+                <span>{{event.distance? `${event.distance}km`:`N/A`}}</span>
+              </div>
+            </md-card-header>
+          </md-card-area>
 
-                    <md-card-content>
-                        <h3 class="md-subheading">Details</h3>
-                        <div class="card-details">
-                            <md-icon>access_time</md-icon>
-                            <div class="md-button-group">
-                                <span class="description-item">{{formatDate(event.createdAt)}}</span>
-                            </div>
-                        </div>
-                        <div class="card-details">
-                            <md-icon>local_offer</md-icon>
-                            <div class="md-button-group">
-                                <md-chip v-for="tag in event.tags" :key="tag.name" :class="getGravityClass(tag.gravity)">
-                                    {{tag.name}}
-                                </md-chip>
-                            </div>
-                        </div>
-                    </md-card-content>
-
-                    <md-card-actions>
-                        <md-button class="full-width" @click="performEvent(event.id)" :md-ripple="false">Accept</md-button>
-                    </md-card-actions>
-                </md-card>
-
+          <md-card-content>
+            <h3 class="md-subheading">Details</h3>
+            <div class="card-details">
+              <md-icon>access_time</md-icon>
+              <div class="md-button-group">
+                <span class="description-item">{{formatDate(event.createdAt)}}</span>
+              </div>
             </div>
-        </div>
-        <div style="height:100%" v-if="trackingEvent">
-            <trackingmap :event="selectedEvent"></trackingmap>
-        </div>
+            <div class="card-details">
+              <md-icon>local_offer</md-icon>
+              <div class="md-button-group">
+                <md-chip v-for="tag in event.tags" :key="tag.name" :class="getGravityClass(tag.gravity)">
+                  {{tag.name}}
+                </md-chip>
+              </div>
+            </div>
+          </md-card-content>
+
+          <md-card-actions>
+            <md-button class="full-width" @click="performEvent(event.id)" :md-ripple="false">Accept</md-button>
+          </md-card-actions>
+        </md-card>
+
+      </div>
     </div>
+    <div style="height:100%" v-if="trackingEvent">
+      <trackingmap :event="selectedEvent"></trackingmap>
+    </div>
+  </div>
 
 </template>
 <style lang="sass" scoped>
@@ -108,12 +108,20 @@ import moment from "moment";
 import getDistance from "../utils/distance";
 module.exports = {
   mounted() {
-    this.getEvents();
-    this.eventsPolling = setInterval(() => {
-      if (!this.trackingEvent) {
+    this.getEvents(true).then(response => {
+      if (response.status == 204) {
         this.getEvents();
+      } else {
+        this.trackEvent(response.data[0]);
       }
-    }, 4000);
+      this.eventsPolling = setInterval(() => {
+        debugger;
+        if (!this.trackingEvent) {
+          this.getEvents();
+        }
+      }, 4000);
+    });
+
     navigator.geolocation.getCurrentPosition(this.onPositionSuccess);
     this.geolocationInterval = setTimeout(() => {
       navigator.geolocation.getCurrentPosition(this.onPositionSuccess);
@@ -154,13 +162,14 @@ module.exports = {
         lng: position.coords.longitude
       };
     },
-    getEvents: function() {
-      trackingService
-        .getTrackingEvents()
+    getEvents: function(active = false) {
+      return trackingService
+        .getTrackingEvents(active)
         .then(response => {
           const events = response.data;
-          if (response.status == 204) {
-            return (this.trackingEvents = []);
+          if (active == true) {
+            this.trackingEvents = [];
+            return response;
           }
           if (!this.currentPosition) {
             this.trackingEvents = response.data;
@@ -195,12 +204,19 @@ module.exports = {
       trackingService
         .performEvent(eventId)
         .then(response => {
-          this.selectedEvent = response.data;
-          this.trackingEvent = true;
+          this.trackEvent(response.data);
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    trackEvent: function(event) {
+      this.selectedEvent = event;
+      this.trackingEvent = true;
+    },
+    untrackEvent: function() {
+      this.selectedEvent = undefined;
+      this.trackingEvent = false;
     },
     formatDate(dateString) {
       return moment(dateString).fromNow();

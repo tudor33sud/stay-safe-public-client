@@ -1,9 +1,12 @@
 import axios from 'axios';
 import store from '../store';
 
-function getTrackingEvents() {
+function getTrackingEvents(active = false) {
     return axios.request({
-        url: `${store.getters.backendURL}/tracking/events`
+        url: `${store.getters.backendURL}/tracking/events`,
+        params: {
+            active: active ? active : undefined
+        }
     });
 }
 
