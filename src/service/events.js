@@ -25,9 +25,9 @@ function uploadAttachment(eventId, data, onUploadProgress = () => { }) {
 }
 
 function getAttachment(eventId, attachmentId) {
-    return axios.request({
-        url: `${store.getters.backendURL}/events/${eventId}/attachments/${attachmentId}`
-    })
+    return axios.get(`${store.getters.backendURL}/events/${eventId}/attachments/${attachmentId}`, {
+        responseType: 'arraybuffer'
+    });
 }
 
 function getLatLng(event) {
