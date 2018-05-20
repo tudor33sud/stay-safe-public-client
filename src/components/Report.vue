@@ -55,7 +55,7 @@
       </md-steppers>
     </md-content>
     <div style="height:100%;" v-if="eventLive">
-      <userlivemap :event="createdEvent"></userlivemap>
+      <userlivemap :event="createdEvent" @finishedEvent="onFinishedEvent"></userlivemap>
     </div>
   </div>
 
@@ -255,6 +255,10 @@ module.exports = {
     },
     goLive: function() {
       this.eventLive = true;
+    },
+    onFinishedEvent(eventId){
+      console.log('add some notification');
+      this.resetComponent();
     }
   }
 };
