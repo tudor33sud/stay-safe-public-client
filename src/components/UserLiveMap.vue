@@ -1,6 +1,6 @@
 <template>
-    <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
-    </googlemap>
+  <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
+  </googlemap>
 </template>
 
 <style lang="sass" scoped>
@@ -40,6 +40,7 @@ module.exports = {
   },
   beforeDestroy() {
     if (this.trackingWS != null) {
+      console.log("closing ws user live map");
       if (this.trackingWS.readyState == this.trackingWS.OPEN) {
         this.trackingWS.close();
       }
@@ -76,6 +77,10 @@ module.exports = {
         const parsed = JSON.parse(message.data);
         if (parsed.type === "ambLocUpdate") {
           this.ambulanceMarkerObject = [getMarkerFromParsedMessage(parsed)];
+        } else {
+          if (parsed.type === "finishedEvent") {
+            this.$emit("finishedEvent", parsed.value.eventId);
+          }
         }
       } catch (err) {}
     }
