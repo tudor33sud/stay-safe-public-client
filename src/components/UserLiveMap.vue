@@ -50,7 +50,7 @@ module.exports = {
       trackingWS: null,
       ambulanceMarkerObject: [],
       targetMarkerArray: [
-        Object.assign(eventService.getLatLon(this.event), {
+        Object.assign(eventService.getLatLng(this.event), {
           title: "Event location"
         })
       ]

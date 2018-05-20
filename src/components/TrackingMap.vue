@@ -33,7 +33,7 @@ module.exports = {
     return {
       trackingWS: null,
       currentLocation: null,
-      targetMarker: Object.assign(eventService.getLatLon(this.event), {
+      targetMarker: Object.assign(eventService.getLatLng(this.event), {
         title: "target location"
       })
     };
