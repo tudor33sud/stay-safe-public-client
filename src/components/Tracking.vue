@@ -8,24 +8,25 @@
                             <h2 class="md-title">{{event.requester.display}}</h2>
                             <div class="md-subhead">
                                 <md-icon>location_on</md-icon>
-                                <span>2 miles</span>
+                                <span>{{event.distance? `${event.distance}km`:`N/A`}}</span>
                             </div>
                         </md-card-header>
                     </md-card-area>
 
                     <md-card-content>
                         <h3 class="md-subheading">Details</h3>
-                        <div class="card-reservation">
+                        <div class="card-details">
                             <md-icon>access_time</md-icon>
                             <div class="md-button-group">
                                 <span class="description-item">{{formatDate(event.createdAt)}}</span>
                             </div>
                         </div>
-                        <div class="card-reservation">
+                        <div class="card-details">
                             <md-icon>local_offer</md-icon>
                             <div class="md-button-group">
-                                <md-chip>Car crash</md-chip>
-                                <md-chip class="md-accent">SOS</md-chip>
+                                <md-chip v-for="tag in event.tags" :key="tag.name" :class="getGravityClass(tag.gravity)">
+                                    {{tag.name}}
+                                </md-chip>
                             </div>
                         </div>
                     </md-card-content>
@@ -38,7 +39,7 @@
             </div>
         </div>
         <div style="height:100%" v-if="trackingEvent">
-            <trackingmap  :event="selectedEvent"></trackingmap>
+            <trackingmap :event="selectedEvent"></trackingmap>
         </div>
     </div>
 
@@ -57,6 +58,10 @@
 
 
 .md-card-example {
+    .md-title{
+        overflow: hidden;
+	    text-overflow: ellipsis;
+    }
     .md-subhead {
         .md-icon {
             $size: 16px;
@@ -73,11 +78,10 @@
     }
     
 
-    .card-reservation {
+    .card-details {
         margin-top: 8px;
         display: flex;
         align-items: center;
-        //justify-content: space-between;
 
         .md-icon {
             margin: 8px 0;
@@ -101,6 +105,7 @@ import * as eventService from "../service/events";
 import * as tagsService from "../service/tags";
 import * as trackingService from "../service/tracking";
 import moment from "moment";
+import getDistance from "../utils/distance";
 module.exports = {
   mounted() {
     this.getEvents();
@@ -109,9 +114,14 @@ module.exports = {
         this.getEvents();
       }
     }, 4000);
+    navigator.geolocation.getCurrentPosition(this.onPositionSuccess);
+    this.geolocationInterval = setTimeout(() => {
+      navigator.geolocation.getCurrentPosition(this.onPositionSuccess);
+    }, 4000);
   },
   beforeDestroy() {
     clearInterval(this.eventsPolling);
+    clearInterval(this.geolocationInterval);
   },
   computed: {
     ...mapGetters({
@@ -124,7 +134,9 @@ module.exports = {
       trackingEvents: [],
       trackingEvent: false,
       selectedEvent: null,
-      eventsPolling: undefined
+      eventsPolling: undefined,
+      geolocationInterval: undefined,
+      currentPosition: undefined
     };
   },
   methods: {
@@ -136,11 +148,44 @@ module.exports = {
         "md-xsmall-size-100"
       ];
     },
+    onPositionSuccess: function(position) {
+      this.currentPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+    },
     getEvents: function() {
       trackingService
         .getTrackingEvents()
         .then(response => {
-          this.trackingEvents = response.data;
+          const events = response.data;
+          if (response.status == 204) {
+            return (this.trackingEvents = []);
+          }
+          if (!this.currentPosition) {
+            this.trackingEvents = response.data;
+          } else {
+            const mappedEvents = response.data.map(event => {
+              const eventWithLatLong = Object.assign({}, event, {
+                location: eventService.getLatLng(event)
+              });
+              eventWithLatLong.distance = getDistance(
+                this.currentPosition,
+                eventWithLatLong.location
+              ).toFixed(2);
+              return eventWithLatLong;
+            });
+            const sorted = mappedEvents.sort((a, b) => {
+              if (a.distance > b.distance) {
+                return 1;
+              }
+              if (a.distance < b.distance) {
+                return -1;
+              }
+              return 0;
+            });
+            this.trackingEvents = sorted;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -159,6 +204,12 @@ module.exports = {
     },
     formatDate(dateString) {
       return moment(dateString).fromNow();
+    },
+    getGravityClass(gravity) {
+      if (gravity === 0) {
+        return ["md-accent"];
+      }
+      return [];
     }
   }
 };
