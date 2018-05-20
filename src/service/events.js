@@ -30,12 +30,11 @@ function getAttachment(eventId, attachmentId) {
     })
 }
 
-function getLatLon(event) {
-    const latlonString = event.location.latlon;
-    const [lat, lon] = latlonString.split(',');
+function getLatLng(event) {
+    const { lat, lng } = event.location;
     return {
         lat,
-        lng: lon
+        lng
     }
 }
 
@@ -44,5 +43,5 @@ module.exports = {
     uploadAttachment,
     getAttachment,
     createEvent,
-    getLatLon
+    getLatLng
 }
