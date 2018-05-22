@@ -1,11 +1,16 @@
 <template>
   <div>
+    <div v-if="trackingEvents.length == 0 && !trackingEvent">
+      <md-empty-state class="md-primary" md-icon="done" md-label="Nothing to track" md-description="City is safe now.">
+      </md-empty-state>
+    </div>
     <div class="md-layout">
       <div v-if="!trackingEvent" class="cards-layout" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
         <md-card class="md-card-example">
           <md-card-area md-inset>
             <md-card-header>
-              <h2 class="md-title">{{event.requester.display}}</h2>
+              <h3 class="md-title">
+                <md-icon>account_circle</md-icon> {{event.requester.display}}</h3>
               <div class="md-subhead">
                 <md-icon>location_on</md-icon>
                 <span>{{event.distance? `${event.distance}km`:`N/A`}}</span>
@@ -49,6 +54,7 @@
 <style lang="sass" scoped>
 .cards-layout{
     .md-card {
+        border-radius: 10px;      
         display: block;
         margin: 16px 16px 0 16px;
     }
@@ -93,7 +99,7 @@
     .md-button-group {
         display: flex;
         .description-item{
-            margin-left: 16px;
+            margin-left: 5px;
         }
         
     }
@@ -218,6 +224,8 @@ module.exports = {
     untrackEvent: function(eventId) {
       this.selectedEvent = undefined;
       this.trackingEvent = false;
+      this.trackingEvents = [];
+      this.getEvents();
     },
     formatDate(dateString) {
       return moment(dateString).fromNow();
