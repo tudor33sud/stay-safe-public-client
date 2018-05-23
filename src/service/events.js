@@ -7,14 +7,15 @@ function getEvents() {
     });
 }
 
-function createEvent(location, tags, description) {
+function createEvent(location, tags, description, address) {
     const locationDTO = `${location.lat},${location.lng}`
     return axios.post(`${store.getters.backendURL}/events`, {
         priority: `medium`,
         description,
         location: locationDTO,
         performerType: 'ambulance',
-        tags
+        tags,
+        address
     })
 };
 

@@ -43,6 +43,7 @@
           <md-field>
             <label>Photo</label>
             <md-file v-model="currentFileSelection" @md-change="onFileSelection" />
+            <md-progress-spinner v-if="isUploading" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
           </md-field>
           <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showUploadError" md-persistent>
             <span>There was an error uploading your file</span>
@@ -53,7 +54,14 @@
           </div>
         </md-step>
       </md-steppers>
+      <div class="md-layout">
+        <div class="md-layout-item md-size-50 upload-image-container" v-for="(attachmentData,index) in attachmentsData" :key="index">
+          <img class="upload-image" :src="attachmentData" />
+        </div>
+      </div>
+
     </md-content>
+
     <div style="height:100%;" v-if="eventLive">
       <userlivemap :event="createdEvent" @finishedEvent="onFinishedEvent"></userlivemap>
     </div>
@@ -62,23 +70,7 @@
 </template>
 <style lang="sass" scoped>
 
-.slide-fade-enter-active {
-  transition: all 2s ease;
-}
-.slide-fade-leave-active {
-  transition: all 2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.4s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
+
 
 
 .success{
@@ -149,6 +141,17 @@ $color-text-light: snow;
     background: $color-primary;
   }
 }
+.upload-image-container{
+  padding:16px;
+  
+  .upload-image{
+    display:block;
+    margin: 0 auto;
+    height:200px;
+    width:auto;
+  }
+}
+
 </style>
 
 <script>
@@ -159,6 +162,7 @@ module.exports = {
   data() {
     return this.initialData();
   },
+  computed: {},
   methods: {
     initialData() {
       return {
@@ -177,7 +181,10 @@ module.exports = {
         showEventError: false,
         continueStepAlignment: "md-alignment-center-left",
         createdEvent: undefined,
-        stepperFinished: false
+        stepperFinished: false,
+        geocoder: new google.maps.Geocoder(),
+        attachmentsData: [],
+        isUploading: false
       };
     },
     resetComponent: function() {
@@ -187,17 +194,27 @@ module.exports = {
       if (!this.createdEvent) {
         throw new Error("no event in current context");
       }
+      this.isUploading = true;
       const file = fileList[0];
       const data = new FormData();
       data.append("image", file);
-      eventService
-        .uploadAttachment(this.createdEvent.id, data, this.onUploadProgress)
-        .then(response => {
-          this.createdEvent = response.data;
-        })
-        .catch(err => {
-          this.showUploadError = true;
-        });
+      // setTimeout(() => {
+        eventService
+          .uploadAttachment(this.createdEvent.id, data, this.onUploadProgress)
+          .then(response => {
+            this.createdEvent = response.data;
+            this.getAttachment(
+              this.createdEvent.attachments[
+                this.createdEvent.attachments.length - 1
+              ].id
+            );
+            this.isUploading = false;
+          })
+          .catch(err => {
+            this.isUploading = false;
+            this.showUploadError = true;
+          });
+      // }, 1000);
     },
     onUploadProgress: function(progressEvent) {
       const percentCompleted = Math.round(
@@ -221,20 +238,22 @@ module.exports = {
           this.showNoTagsSelectedError = true;
           return;
         }
-
-        eventService
-          .createEvent(
-            this.reportStepperCurrentLocation,
-            this.selectedTags,
-            "My event"
-          )
-          .then(response => {
-            this.createdEvent = response.data;
-            this.setStepDone(step, nextStep);
-          })
-          .catch(err => {
-            this.showEventError = true;
-          });
+        this.geocodeAddress(this.reportStepperCurrentLocation).then(address => {
+          eventService
+            .createEvent(
+              this.reportStepperCurrentLocation,
+              this.selectedTags,
+              "My event",
+              address
+            )
+            .then(response => {
+              this.createdEvent = response.data;
+              this.setStepDone(step, nextStep);
+            })
+            .catch(err => {
+              this.showEventError = true;
+            });
+        });
       } else {
         this.setStepDone(step, nextStep);
       }
@@ -256,9 +275,34 @@ module.exports = {
     goLive: function() {
       this.eventLive = true;
     },
-    onFinishedEvent(eventId){
-      console.log('add some notification');
+    onFinishedEvent(eventId) {
+      console.log("add some notification");
       this.resetComponent();
+    },
+    geocodeAddress: function(location) {
+      return new Promise((resolve, reject) => {
+        this.geocoder.geocode({ location }, (results, status) => {
+          if (status === "OK") {
+            if (results[0]) {
+              return resolve(results[0].formatted_address);
+            }
+          }
+          return resolve(`${location.lat},${location.lng}`);
+        });
+      });
+    },
+    getAttachment: function(attachmentId) {
+      eventService
+        .getAttachment(this.createdEvent.id, attachmentId)
+        .then(response => {
+          const imageData =
+            "data:image/png;base64, " +
+            new Buffer(response.data, "binary").toString("base64");
+          this.attachmentsData.push(imageData);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
