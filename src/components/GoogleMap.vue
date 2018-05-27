@@ -161,6 +161,7 @@ export default {
         lng: position.coords.longitude
       };
       this.changeCurrentPosition(latLngPosition);
+      this.map.setCenter(latLngPosition);
       const changedMarkerPosition = new google.maps.LatLng(
         latLngPosition.lat,
         latLngPosition.lng
