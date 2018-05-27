@@ -74,47 +74,6 @@ $cards-spacing-medium-screen: 16px;
     }
 }
 
-
-.md-card-example {
-    .md-title{
-        overflow: hidden;
-	      text-overflow: ellipsis;
-    }
-    .md-subhead {
-        .md-icon {
-            $size: 16px;
-
-            width: $size;
-            min-width: $size;
-            height: $size;
-            font-size: $size !important;
-        }
-
-        span {
-            vertical-align: middle;
-        }
-    }
-    
-
-    .card-details {
-        margin-top: 8px;
-        display: flex;
-        align-items: center;
-
-        .md-icon {
-            margin: 8px 0;
-        }
-    }
-
-    .md-button-group {
-        display: flex;
-        .description-item{
-            margin-left: 5px;
-        }
-        
-    }
-}
-
 </style>
 
 <script>

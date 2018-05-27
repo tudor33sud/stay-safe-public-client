@@ -6,8 +6,8 @@
       </md-empty-state>
     </div>
     <div>
-      <div class="md-layout cards-layout">
-        <div v-if="!eventLive" v-for="event in myEvents" :key="event.id" class="md-layout-item md-size-25 md-medium-size-50 md-xsmall-size-100">
+      <div v-if="!eventLive" class="md-layout cards-layout">
+        <div v-for="event in myEvents" :key="event.id" class="md-layout-item md-size-25 md-medium-size-50 md-xsmall-size-100">
           <md-card class="md-card-example">
             <md-card-media>
               <img :src="getEventMap(event)" alt="map">
@@ -50,6 +50,10 @@
     <div style="height:100%;" v-if="eventLive">
       <userlivemap :event="selectedEvent" @finishedEvent="onFinishedEvent"></userlivemap>
     </div>
+    <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventFinished" md-persistent>
+      <span>Event finished successfully!</span>
+      <md-button class="md-primary" @click="showEventFinished = false; untrackEvent()">Ok</md-button>
+    </md-snackbar>
   </div>
 </template>
 
@@ -87,43 +91,6 @@ $cards-spacing-medium-screen: 16px;
     margin-bottom: 16px;
   }
 
-  .md-card-example {
-    .md-title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .md-subhead {
-      .md-icon {
-        $size: 16px;
-
-        width: $size;
-        min-width: $size;
-        height: $size;
-        font-size: $size !important;
-      }
-
-      span {
-        vertical-align: middle;
-      }
-    }
-
-    .card-details {
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-
-      .md-icon {
-        margin: 8px 0;
-      }
-    }
-
-    .md-button-group {
-      display: flex;
-      .description-item {
-        margin-left: 16px;
-      }
-    }
-  }
 }
 
 
@@ -140,7 +107,8 @@ module.exports = {
     return {
       myEvents: [],
       selectedEvent: undefined,
-      eventLive: false
+      eventLive: false,
+      showEventFinished:false
     };
   },
   methods: {
@@ -179,8 +147,11 @@ module.exports = {
       }&zoom=17&key=AIzaSyCxFJ9kHyBMxweAlD_2mx_LiXxiDeV7kx4`;
     },
     onFinishedEvent(eventId) {
-      console.log("add some notification");
+      this.showEventFinished=true;
       this.getEvents();
+    },
+    untrackEvent(){
+      this.eventLive=false;
     }
   }
 };
