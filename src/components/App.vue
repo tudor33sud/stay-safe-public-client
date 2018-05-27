@@ -64,9 +64,7 @@ import * as eventService from "../service/events";
 const menus = {
   REPORT: "Report",
   MY_EVENTS: "My events",
-  CONTACT: "Contact",
-  TRACKING: "Tracking",
-  ASSIGNMENTS: "Assignments"
+  TRACKING: "Tracking"
 };
 module.exports = {
   mounted: function() {
@@ -100,9 +98,6 @@ module.exports = {
         if (this.auth.hasResourceRole("ambulance", "stay-safe-api")) {
           return this.menuItemsAmbulance;
         }
-        if (this.auth.hasResourceRole("dispatcher", "stay-safe-api")) {
-          return this.menuItemsDispatcher;
-        }
       }
       return this.menuItemsUser;
     },
@@ -125,30 +120,12 @@ module.exports = {
         {
           name: menus.MY_EVENTS,
           icon: "event"
-        },
-        {
-          name: menus.CONTACT,
-          icon: "contact_support"
         }
       ],
       menuItemsAmbulance: [
         {
           name: menus.TRACKING,
           icon: "add_location"
-        },
-        {
-          name: menus.CONTACT,
-          icon: "contact_support"
-        }
-      ],
-      menuItemsDispatcher: [
-        {
-          name: menus.ASSIGNMENTS,
-          icon: "add_location"
-        },
-        {
-          name: menus.CONTACT,
-          icon: "contact_support"
         }
       ]
     };
@@ -164,16 +141,11 @@ module.exports = {
         this.$router.push("/report");
       } else if (menu == menus.MY_EVENTS) {
         this.$router.push("/events");
-      } else if (menu == menus.CONTACT) {
-        this.$router.push("/contact");
       } else if (menu == menus.TRACKING) {
         this.$router.push("/tracking");
-      } else if (menu == menus.ASSIGNMENTS) {
-        this.$router.push("/assignments");
       }
-      // setTimeout(() => {
+      
       this.showNavigation = false;
-      // }, 100);
     }
   }
 };
