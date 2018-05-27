@@ -18,7 +18,9 @@
           </md-menu-content>
         </md-menu>
       </div>
+
     </md-toolbar>
+    <md-progress-bar v-show="loadingVisible" style="position:fixed;top:56px;right:0;left:0;" class="md-accent" md-mode="indeterminate"></md-progress-bar>
 
     <md-drawer :md-active.sync="showNavigation">
       <md-toolbar class="md-transparent" md-elevation="0">
@@ -32,8 +34,10 @@
         </md-list-item>
       </md-list>
     </md-drawer>
-    <router-view class="router-view">
-    </router-view>
+    <transition name="fade">
+      <router-view class="router-view">
+      </router-view>
+    </transition>
   </div>
 </template>
 
@@ -112,6 +116,7 @@ module.exports = {
   data() {
     return {
       showNavigation: false,
+      loadingVisible: false,
       menuItemsUser: [
         {
           name: menus.REPORT,
@@ -166,9 +171,9 @@ module.exports = {
       } else if (menu == menus.ASSIGNMENTS) {
         this.$router.push("/assignments");
       }
-      setTimeout(() => {
-        this.showNavigation = false;
-      }, 100);
+      // setTimeout(() => {
+      this.showNavigation = false;
+      // }, 100);
     }
   }
 };
