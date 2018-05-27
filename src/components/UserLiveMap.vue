@@ -1,6 +1,9 @@
 <template>
-  <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
-  </googlemap>
+  <div style="height:100%;position:relative;">
+    <md-progress-bar v-show="loadingVisible" style="position:absolute;top:0;right:0;left:0;z-index:5000;" class="md-accent" md-mode="indeterminate"></md-progress-bar>
+    <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
+    </googlemap>
+  </div>
 </template>
 
 <style lang="sass" scoped>
@@ -49,6 +52,7 @@ module.exports = {
   data() {
     return {
       trackingWS: null,
+      loadingVisible: true,
       ambulanceMarkerObject: [],
       targetMarkerArray: [
         Object.assign(eventService.getLatLng(this.event), {
@@ -76,6 +80,7 @@ module.exports = {
       try {
         const parsed = JSON.parse(message.data);
         if (parsed.type === "ambLocUpdate") {
+          this.loadingVisible = false;
           this.ambulanceMarkerObject = [getMarkerFromParsedMessage(parsed)];
         } else {
           if (parsed.type === "finishedEvent") {
