@@ -14,7 +14,7 @@
           <md-icon>attachment</md-icon>
           <span> Attached images</span>
           <div class="md-layout">
-            <div v-for="attachmentData in attachmentsData" class="md-layout-item md-size-25 md-medium-size-50 image-wrapper">
+            <div v-for="attachmentData in attachmentsData" class="md-layout-item md-size-25 md-medium-size-50 md-small-size-100 image-wrapper">
               <img style="width:100%;height:100%;" :src="attachmentData" alt="event pictue">
             </div>
           </div>
