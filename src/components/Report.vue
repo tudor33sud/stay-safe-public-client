@@ -65,6 +65,10 @@
     <div style="height:100%;" v-if="eventLive">
       <userlivemap :event="createdEvent" @finishedEvent="onFinishedEvent"></userlivemap>
     </div>
+    <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventFinished" md-persistent>
+      <span>Event finished successfully!</span>
+      <md-button class="md-primary" @click="showEventFinished = false; resetComponent()">Ok</md-button>
+    </md-snackbar>
   </div>
 
 </template>
@@ -179,6 +183,7 @@ module.exports = {
         showUploadError: false,
         showNoTagsSelectedError: false,
         showEventError: false,
+        showEventFinished: false,
         continueStepAlignment: "md-alignment-center-left",
         createdEvent: undefined,
         stepperFinished: false,
@@ -199,21 +204,21 @@ module.exports = {
       const data = new FormData();
       data.append("image", file);
       // setTimeout(() => {
-        eventService
-          .uploadAttachment(this.createdEvent.id, data, this.onUploadProgress)
-          .then(response => {
-            this.createdEvent = response.data;
-            this.getAttachment(
-              this.createdEvent.attachments[
-                this.createdEvent.attachments.length - 1
-              ].id
-            );
-            this.isUploading = false;
-          })
-          .catch(err => {
-            this.isUploading = false;
-            this.showUploadError = true;
-          });
+      eventService
+        .uploadAttachment(this.createdEvent.id, data, this.onUploadProgress)
+        .then(response => {
+          this.createdEvent = response.data;
+          this.getAttachment(
+            this.createdEvent.attachments[
+              this.createdEvent.attachments.length - 1
+            ].id
+          );
+          this.isUploading = false;
+        })
+        .catch(err => {
+          this.isUploading = false;
+          this.showUploadError = true;
+        });
       // }, 1000);
     },
     onUploadProgress: function(progressEvent) {
@@ -277,7 +282,8 @@ module.exports = {
     },
     onFinishedEvent(eventId) {
       console.log("add some notification");
-      this.resetComponent();
+      this.showEventFinished = true;
+      // this.resetComponent();
     },
     geocodeAddress: function(location) {
       return new Promise((resolve, reject) => {
