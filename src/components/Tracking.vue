@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="position:relative;">
+    <md-progress-bar v-show="loadingVisible" style="position:absolute;top:0;right:0;left:0;" class="md-accent" md-mode="indeterminate"></md-progress-bar>
     <div v-if="trackingEvents.length == 0 && !trackingEvent">
       <md-empty-state class="md-primary" md-icon="done" md-label="Nothing to track" md-description="City is safe now.">
       </md-empty-state>
@@ -149,6 +150,7 @@ module.exports = {
       trackingEvents: [],
       trackingEvent: false,
       selectedEvent: null,
+      loadingVisible: false,
       eventsPolling: undefined,
       geolocationInterval: undefined,
       currentPosition: undefined
@@ -164,6 +166,9 @@ module.exports = {
       ];
     },
     onPositionSuccess: function(position) {
+      if (!this.currentPosition && !this.trackingEvent) {
+        this.getEvents();
+      }
       this.currentPosition = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
@@ -214,6 +219,12 @@ module.exports = {
           this.trackEvent(response.data);
         })
         .catch(err => {
+          debugger;
+          if (err.response) {
+            if (err.response.status === 409) {
+              console.log("you should display notification here");
+            }
+          }
           console.log(err);
         });
     },
