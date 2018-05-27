@@ -2,11 +2,11 @@
   <div style="position:relative;">
     <md-progress-bar v-show="loadingVisible" style="position:absolute;top:0;right:0;left:0;" class="md-accent" md-mode="indeterminate"></md-progress-bar>
     <div v-if="trackingEvents.length == 0 && !trackingEvent">
-      <md-empty-state class="md-primary" md-icon="done" md-label="Nothing to track" md-description="City is safe now.">
+      <md-empty-state class="md-primary centered-container" md-icon="done" md-label="Nothing to track" md-description="City is safe now.">
       </md-empty-state>
     </div>
-    <div class="md-layout">
-      <div v-if="!trackingEvent" class="cards-layout" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
+    <div class="md-layout cards-layout">
+      <div v-if="!trackingEvent" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
         <md-card class="md-card-example">
           <md-card-area md-inset>
             <md-card-header>
@@ -53,15 +53,24 @@
 
 </template>
 <style lang="sass" scoped>
+$cards-spacing-big-screen: 24px;
+$cards-spacing-medium-screen: 16px;
 .cards-layout{
+    margin-left:$cards-spacing-big-screen;
+    margin-top: $cards-spacing-big-screen;
+    @media screen and (max-width: 960px) {
+      margin-left: $cards-spacing-medium-screen;
+      margin-top: $cards-spacing-medium-screen;
+    }
     .md-card {
         border-radius: 10px;      
         display: block;
-        margin: 16px 16px 0 16px;
-    }
-
-    &:last-child{
-        margin-bottom:16px;
+        margin-right: $cards-spacing-big-screen;
+        margin-bottom: $cards-spacing-big-screen;
+        @media screen and (max-width: 960px) {
+          margin-right: $cards-spacing-medium-screen;
+          margin-bottom: $cards-spacing-medium-screen;
+        }
     }
 }
 
@@ -69,7 +78,7 @@
 .md-card-example {
     .md-title{
         overflow: hidden;
-	    text-overflow: ellipsis;
+	      text-overflow: ellipsis;
     }
     .md-subhead {
         .md-icon {

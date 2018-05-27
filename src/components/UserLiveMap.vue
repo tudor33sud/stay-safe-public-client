@@ -70,7 +70,7 @@ module.exports = {
         //console.log("opened");
       };
       this.trackingWS.onclose = e => {
-        alert("ws closed");
+        // alert("ws closed");
       };
       this.trackingWS.onmessage = message => {
         this.onMessage(message);

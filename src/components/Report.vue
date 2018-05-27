@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-empty-state v-if="!creatingEvent && !stepperFinished" style="margin-top:32vh;" md-label="Any danger nearby?">
+    <md-empty-state v-if="!creatingEvent && !stepperFinished" class="report-action-container" md-label="Any danger nearby?">
       <span @click="creatingEvent = !creatingEvent" class="glowing-item">
         <md-icon style="color:white;font-size:46px">local_hospital</md-icon>
       </span>
@@ -54,9 +54,11 @@
           </div>
         </md-step>
       </md-steppers>
-      <div class="md-layout">
-        <div class="md-layout-item md-size-50 upload-image-container" v-for="(attachmentData,index) in attachmentsData" :key="index">
-          <img class="upload-image" :src="attachmentData" />
+      <div class="md-layout preview-container">
+        <div class="md-layout-item md-size-25 md-small-size-50" v-for="(attachmentData,index) in attachmentsData" :key="index">
+          <div class="upload-image-container">
+            <img class="upload-image" :src="attachmentData" />
+          </div>
         </div>
       </div>
 
@@ -145,14 +147,26 @@ $color-text-light: snow;
     background: $color-primary;
   }
 }
-.upload-image-container{
-  padding:16px;
-  
+.preview-container{
+  margin-left: 24px;
+  .upload-image-container{
+    margin-right:24px;
+    background-color:ghostwhite;
+  }
   .upload-image{
     display:block;
     margin: 0 auto;
     height:200px;
     width:auto;
+  } 
+}
+
+
+
+.report-action-container{
+  margin-top: calc( 50vh - 56px - 100px );
+  .glowing-item{
+    margin-top:8px;
   }
 }
 

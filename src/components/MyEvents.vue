@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="myEvents.length == 0 && !eventLive" style="margin-top:20vh;">
-      <md-empty-state class="md-primary" md-icon="error" md-label="No events added yet">
+    <div v-if="myEvents.length == 0 && !eventLive">
+      <md-empty-state class="md-primary centered-container" md-icon="error" md-label="No events added yet">
         <md-button to="/report" class="stepper-next">Report now</md-button>
       </md-empty-state>
     </div>
@@ -56,8 +56,16 @@
 <style lang="sass" scoped>
 .cards-layout {
   .md-card {
+    border-radius: 10px;
     display: block;
     margin: 16px 16px 0 16px;
+  }
+
+  .md-card-media{
+    img{
+      border-radius: 10px 10px 0 0;
+    }
+
   }
 
   &:last-child {

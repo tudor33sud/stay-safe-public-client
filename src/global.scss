@@ -19,3 +19,13 @@
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
+
+.centered-container{
+  position: absolute !important;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  margin:0 auto;
+}
+

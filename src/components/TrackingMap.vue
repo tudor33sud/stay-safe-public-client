@@ -47,6 +47,10 @@ $text-color-black: #000;
     padding: 24px;
     padding-right:0;
 
+    @media screen and (max-width: 960px) {
+      padding:16px;
+    }
+
     .event-detail-item {
       margin-bottom: 8px;
 
@@ -73,7 +77,7 @@ $text-color-black: #000;
     height: 100%; 
     overflow:auto;
   }
-  background-color: rgba(0,0,0, 0.85);
+  background-color: rgba(0,0,0, 0.40);
 
   &.fullscreen{
     position: absolute;
@@ -152,7 +156,7 @@ module.exports = {
         //console.log("opened");
       };
       this.trackingWS.onclose = e => {
-        alert("ws closed");
+        // alert("ws closed");
       };
       this.trackingWS.onmessage = message => {
         this.onTrackingMessage(message);
