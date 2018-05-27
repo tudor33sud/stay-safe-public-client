@@ -25,13 +25,17 @@
             <md-card-content>
               <h3 class="md-subheading">Details</h3>
               <div class="card-details">
-                <md-icon>access_time</md-icon>
+                <md-icon>access_time
+                  <md-tooltip md-direction="top">Created time</md-tooltip>
+                </md-icon>
                 <div class="md-button-group">
                   <span class="description-item">{{formatDate(event.createdAt)}}</span>
                 </div>
               </div>
               <div class="card-details">
-                <md-icon>local_offer</md-icon>
+                <md-icon>local_offer
+                  <md-tooltip md-direction="top">Tags</md-tooltip>
+                </md-icon>
                 <div class="md-button-group">
                   <md-chip v-for="tag in event.tags" :key="tag.name" :class="getGravityClass(tag.gravity)">
                     {{tag.name}}
@@ -39,7 +43,9 @@
                 </div>
               </div>
               <div class="card-details">
-                <md-icon>timelapse</md-icon>
+                <md-icon>timelapse
+                  <md-tooltip md-direction="top">Duration</md-tooltip>
+                </md-icon>
                 <div class="md-button-group">
                   <span class="description-item">{{formatDuration(event.duration)}}</span>
                 </div>
@@ -161,7 +167,7 @@ module.exports = {
       return moment(dateString).fromNow();
     },
     formatDuration(ms) {
-      if(!ms){
+      if (!ms) {
         return "N/A";
       }
       return moment
