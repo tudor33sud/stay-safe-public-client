@@ -6,8 +6,8 @@
       </md-empty-state>
     </div>
     <div>
-      <div class="md-layout">
-        <div v-if="!eventLive" v-for="event in myEvents" :key="event.id" class="cards-layout md-layout-item md-size-25 md-medium-size-50 md-xsmall-size-100">
+      <div class="md-layout cards-layout">
+        <div v-if="!eventLive" v-for="event in myEvents" :key="event.id" class="md-layout-item md-size-25 md-medium-size-50 md-xsmall-size-100">
           <md-card class="md-card-example">
             <md-card-media>
               <img :src="getEventMap(event)" alt="map">
@@ -54,11 +54,25 @@
 </template>
 
 <style lang="sass" scoped>
+$cards-spacing-big-screen: 24px;
+$cards-spacing-medium-screen: 16px;
 .cards-layout {
-  .md-card {
-    border-radius: 10px;
-    display: block;
-    margin: 16px 16px 0 16px;
+    margin-left:$cards-spacing-big-screen;
+    margin-top: $cards-spacing-big-screen;
+    @media screen and (max-width: 960px) {
+      margin-left: $cards-spacing-medium-screen;
+      margin-top: $cards-spacing-medium-screen;
+    }
+
+    .md-card {
+      border-radius: 10px;      
+      display: block;
+      margin-right: $cards-spacing-big-screen;
+      margin-bottom: $cards-spacing-big-screen;
+      @media screen and (max-width: 960px) {
+        margin-right: $cards-spacing-medium-screen;
+        margin-bottom: $cards-spacing-medium-screen;
+      } 
   }
 
   .md-card-media{
@@ -67,6 +81,7 @@
     }
 
   }
+
 
   &:last-child {
     margin-bottom: 16px;

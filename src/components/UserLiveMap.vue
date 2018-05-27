@@ -1,6 +1,6 @@
 <template>
   <div style="height:100%;position:relative;">
-    <md-progress-bar v-show="loadingVisible" style="position:absolute;top:0;right:0;left:0;z-index:5000;" class="md-accent" md-mode="indeterminate"></md-progress-bar>
+    <md-progress-bar v-show="loadingVisible"  class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
     <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
     </googlemap>
   </div>

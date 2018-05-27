@@ -5,8 +5,8 @@
       <md-empty-state class="md-primary centered-container" md-icon="done" md-label="Nothing to track" md-description="City is safe now.">
       </md-empty-state>
     </div>
-    <div class="md-layout cards-layout">
-      <div v-if="!trackingEvent" v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
+    <div v-if="!trackingEvent" class="md-layout cards-layout">
+      <div v-for="event in trackingEvents" :key="event.id" :class="setCardLayout()">
         <md-card class="md-card-example">
           <md-card-area md-inset>
             <md-card-header>

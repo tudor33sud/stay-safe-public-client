@@ -20,7 +20,7 @@
       </div>
 
     </md-toolbar>
-    <md-progress-bar v-show="loadingVisible" style="position:fixed;top:56px;right:0;left:0;" class="md-accent" md-mode="indeterminate"></md-progress-bar>
+
 
     <md-drawer :md-active.sync="showNavigation">
       <md-toolbar class="md-transparent" md-elevation="0">
@@ -111,7 +111,6 @@ module.exports = {
   data() {
     return {
       showNavigation: false,
-      loadingVisible: false,
       menuItemsUser: [
         {
           name: menus.REPORT,
