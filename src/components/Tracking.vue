@@ -41,9 +41,12 @@
             <md-button class="full-width" @click="performEvent(event.id)" :md-ripple="false">Accept</md-button>
           </md-card-actions>
         </md-card>
-
       </div>
     </div>
+    <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventConflict" md-persistent>
+      <span class="md-accent">Event has already been taken</span>
+      <md-button class="md-accent" @click="showEventConflict = false">Ok</md-button>
+    </md-snackbar>
     <div style="height:100%;position:relative;" v-if="trackingEvent">
       <div style="height: 100%">
         <trackingmap :event="selectedEvent" @eventFinished="untrackEvent"></trackingmap>
@@ -121,7 +124,8 @@ module.exports = {
       loadingVisible: false,
       eventsPolling: undefined,
       geolocationInterval: undefined,
-      currentPosition: undefined
+      currentPosition: undefined,
+      showEventConflict: false
     };
   },
   methods: {
@@ -190,7 +194,7 @@ module.exports = {
           debugger;
           if (err.response) {
             if (err.response.status === 409) {
-              console.log("you should display notification here");
+              this.showEventConflict = true;
             }
           }
           console.log(err);

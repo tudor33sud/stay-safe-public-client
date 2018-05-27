@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-if="myEvents.length == 0 && !eventLive">
+    <md-progress-bar v-show="loadingVisible" class="top-progress-bar" md-mode="indeterminate"></md-progress-bar>
+    <div v-if="myEvents.length == 0 && !eventLive && !loadingVisible">
       <md-empty-state class="md-primary centered-container" md-icon="error" md-label="No events added yet">
         <md-button to="/report" class="stepper-next">Report now</md-button>
       </md-empty-state>
@@ -35,6 +36,12 @@
                   <md-chip v-for="tag in event.tags" :key="tag.name" :class="getGravityClass(tag.gravity)">
                     {{tag.name}}
                   </md-chip>
+                </div>
+              </div>
+              <div class="card-details">
+                <md-icon>timelapse</md-icon>
+                <div class="md-button-group">
+                  <span class="description-item">{{formatDuration(event.duration)}}</span>
                 </div>
               </div>
             </md-card-content>
@@ -101,20 +108,34 @@ import * as eventService from "../service/events.js";
 import moment from "moment";
 module.exports = {
   mounted() {
-    this.getEvents();
+    this.loadingVisible = true;
+    this.getEvents().then(() => {
+      this.loadingVisible = false;
+    });
   },
   data() {
     return {
       myEvents: [],
       selectedEvent: undefined,
       eventLive: false,
-      showEventFinished:false
+      showEventFinished: false,
+      loadingVisible: true
     };
   },
   methods: {
     getEvents: function() {
-      eventService
-        .getEvents()
+      //test loading dev
+      function wait(ms) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve();
+          }, ms);
+        });
+      }
+      return wait(1000)
+        .then(() => {
+          return eventService.getEvents();
+        })
         .then(response => {
           if (response.status == 204) {
             return (this.myEvents = []);
@@ -124,9 +145,28 @@ module.exports = {
         .catch(err => {
           console.log(err);
         });
+      // return eventService
+      //   .getEvents()
+      //   .then(response => {
+      //     if (response.status == 204) {
+      //       return (this.myEvents = []);
+      //     }
+      //     this.myEvents = response.data;
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     formatDate(dateString) {
       return moment(dateString).fromNow();
+    },
+    formatDuration(ms) {
+      if(!ms){
+        return "N/A";
+      }
+      return moment
+        .utc(moment.duration(ms).asMilliseconds())
+        .format("HH:mm:ss");
     },
     getGravityClass(gravity) {
       if (gravity === 0) {
@@ -147,11 +187,11 @@ module.exports = {
       }&zoom=17&key=AIzaSyCxFJ9kHyBMxweAlD_2mx_LiXxiDeV7kx4`;
     },
     onFinishedEvent(eventId) {
-      this.showEventFinished=true;
+      this.showEventFinished = true;
       this.getEvents();
     },
-    untrackEvent(){
-      this.eventLive=false;
+    untrackEvent() {
+      this.eventLive = false;
     }
   }
 };

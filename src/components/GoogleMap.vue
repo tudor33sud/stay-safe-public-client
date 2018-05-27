@@ -138,10 +138,11 @@ export default {
 
       if (this.syncGeolocation) {
         this.locationWatcher = setInterval(() => {
+          //production method 
           // navigator.geolocation.getCurrentPosition(
           //   this.onLocationWatchSuccess,
           //   this.onLocationWatchError,
-          //   { timeout: 5000 }
+          //   { timeout: 3500 }
           // );
         }, 4000);
         //test method
