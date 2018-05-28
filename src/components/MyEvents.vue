@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-height-relative">
     <md-progress-bar v-show="loadingVisible" class="top-progress-bar" md-mode="indeterminate"></md-progress-bar>
     <div v-if="myEvents.length == 0 && !eventLive && !loadingVisible">
       <md-empty-state class="md-primary centered-container" md-icon="error" md-label="No events added yet">

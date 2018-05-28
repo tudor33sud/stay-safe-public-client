@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <md-empty-state v-if="!creatingEvent && !stepperFinished" class="report-action-container" md-label="Any danger nearby?">
-      <span @click="creatingEvent = !creatingEvent" class="glowing-item">
-        <md-icon style="color:white;font-size:46px">local_hospital</md-icon>
+  <div class="full-height-relative">
+    <md-empty-state v-if="!creatingEvent && !stepperFinished" class="report-action-container">
+      <span @click="creatingEvent = !creatingEvent" class="glowing-item" >
+        <md-icon class="md-size-2x">local_hospital</md-icon>
       </span>
+      <h1 class="md-title">Any danger nearby?</h1>
     </md-empty-state>
-    <md-empty-state class="md-primary" v-if="stepperFinished && !eventLive" style="margin-top:18vh;" md-label="All set. Wanna go live?" md-icon="check_circle">
+    <md-empty-state class="md-primary" style="margin-top:20vh;" v-if="stepperFinished && !eventLive" md-label="All set. Wanna go live?" md-icon="check_circle">
       <md-button class="md-primary stepper-next" @click="goLive()">Go Live</md-button>
       <md-button @click="resetComponent()" class="stepper-next">Back</md-button>
     </md-empty-state>
@@ -88,8 +89,18 @@
 $color-primary: #547cf5;
 $color-primary-light: #e0422c;
 $color-text-light: snow;
+
+
+@-webkit-keyframes rotation {
+		from {
+				-webkit-transform: rotate(0);
+		}
+		to {
+				-webkit-transform: rotate(359deg);
+		}
+}
 .my-content{
-    height: calc(100vh - 56px);
+    min-height: 100%;
 
     .stepper-next{
         margin-left:0;
@@ -98,7 +109,9 @@ $color-text-light: snow;
 .glowing-item {
     background: $color-primary;
     border: none;
-    border-radius: 25px;
+    border-radius: 50% 50% 2px 2px;
+    width:100px;
+    height:110px;
     color: $color-text-light;
     cursor: pointer;
     font-size: 1.25em;
@@ -107,10 +120,17 @@ $color-text-light: snow;
     padding: .75em 2em;
     position: relative;
     text-transform: uppercase;
-    
-    // &:hover {
-    //     animation: glow 1s ease-in infinite;
-    // }
+
+    .md-icon{
+      color:white;
+      font-size:46px;
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      // -webkit-animation: rotation 0.3s 1 ease-out;
+    }
 
     animation: glow 1s ease-in infinite;
     
@@ -165,9 +185,7 @@ $color-text-light: snow;
 
 .report-action-container{
   margin-top: calc( 50vh - 56px - 100px );
-  .glowing-item{
-    margin-top:8px;
-  }
+
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div style="position:relative;">
+  <div class="full-height-relative">
     <md-progress-bar v-show="loadingVisible" style="position:absolute;top:0;right:0;left:0;" class="md-accent" md-mode="indeterminate"></md-progress-bar>
     <div v-if="trackingEvents.length == 0 && !trackingEvent">
       <md-empty-state class="md-primary centered-container" md-icon="done" md-label="Nothing to track" md-description="City is safe now.">

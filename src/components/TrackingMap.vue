@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%">
+  <div class="full-height-relative">
     <googlemap name="tracking" :currentLocationDraggable="false" :geolocationIcon="getAmbulanceIcon()" :markers="[targetMarker]" :syncGeolocation="true" @currentLocationChanged="currentLocationChanged">
     </googlemap>
     <div class="details-container" :class="{fullscreen:detailsFullScreen}">

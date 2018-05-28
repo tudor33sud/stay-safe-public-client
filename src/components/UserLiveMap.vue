@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;position:relative;">
+  <div class="full-height-relative">
     <md-progress-bar v-show="loadingVisible"  class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
     <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
     </googlemap>
