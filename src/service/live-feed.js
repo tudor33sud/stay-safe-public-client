@@ -28,8 +28,16 @@ function getWS(eventId, authToken) {
     );
 }
 
+function sendHealth(ws) {
+    ws.send(JSON.stringify({
+        type: "health",
+        value: "ping"
+    }));
+}
+
 module.exports = {
     sendLocation,
     sendEventFinished,
-    getWS
+    getWS,
+    sendHealth
 }

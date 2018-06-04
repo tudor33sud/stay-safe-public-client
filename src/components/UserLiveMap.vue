@@ -48,6 +48,9 @@ module.exports = {
         this.trackingWS.close();
       }
     }
+    if(this.healthInterval){
+      clearInterval(this.healthInterval);
+    }
   },
   data() {
     return {
@@ -58,13 +61,17 @@ module.exports = {
         Object.assign(eventService.getLatLng(this.event), {
           title: "Event location"
         })
-      ]
+      ],
+      healthInterval:undefined
     };
   },
   methods: {
     initWebSocket(eventId) {
       this.trackingWS = liveFeedService.getWS(eventId, this.auth.token);
       this.trackingWS.onopen = e => {
+        this.healthInterval = setInterval(()=>{
+          liveFeedService.sendHealth(this.trackingWS);
+        },10000);
         //console.log("opened");
       };
       this.trackingWS.onclose = e => {
