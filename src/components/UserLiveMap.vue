@@ -1,6 +1,6 @@
 <template>
   <div class="full-height-relative">
-    <md-progress-bar v-show="loadingVisible"  class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
+    <md-progress-bar v-show="loadingVisible" class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
     <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
     </googlemap>
   </div>
@@ -63,9 +63,7 @@ module.exports = {
   },
   methods: {
     initWebSocket(eventId) {
-      this.trackingWS = new WebSocket(
-        `ws://localhost:8999?auth=${this.auth.token}&eventId=${eventId}`
-      );
+      this.trackingWS = liveFeedService.getWS(eventId, this.auth.token);
       this.trackingWS.onopen = e => {
         //console.log("opened");
       };

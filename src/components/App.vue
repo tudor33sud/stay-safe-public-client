@@ -21,7 +21,6 @@
 
     </md-toolbar>
 
-
     <md-drawer :md-active.sync="showNavigation">
       <md-toolbar class="md-transparent" md-elevation="0">
         <span class="md-title">Stay safe</span>
@@ -45,6 +44,7 @@
 <style lang="sass" scoped>
   .fixedSizeToolbar{
     min-height:56px;
+    height: 56px;
   }
   .md-drawer {
     width: 230px;
@@ -53,7 +53,13 @@
 
   .router-view{
     height: calc(100vh - 56px);
-    overflow:auto;
+    height: -webkit-calc(100vh - 56px);
+    height: -moz-calc(100vh - 56px);
+    overflow-y:auto;
+    @media screen and (max-width: 768px) {
+      overflow-y:scroll;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 </style>
 
@@ -73,6 +79,13 @@ module.exports = {
     metaTag.setAttribute("name", "viewport");
     metaTag.setAttribute("content", "width=device-width,initial-scale=1.0");
     document.head.appendChild(metaTag);
+    let materialIconsTag = document.createElement("link");
+    materialIconsTag.setAttribute(
+      "href",
+      "//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons"
+    );
+    materialIconsTag.setAttribute("rel", "stylesheet");
+    document.head.appendChild(materialIconsTag);
     //add google maps scripts
     let googleMapsScript = document.createElement("script");
     googleMapsScript.setAttribute(
@@ -143,7 +156,7 @@ module.exports = {
       } else if (menu == menus.TRACKING) {
         this.$router.push("/tracking");
       }
-      
+
       this.showNavigation = false;
     }
   }

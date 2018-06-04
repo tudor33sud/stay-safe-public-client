@@ -149,9 +149,7 @@ module.exports = {
   },
   methods: {
     initWebSocket(eventId) {
-      this.trackingWS = new WebSocket(
-        `ws://localhost:8999?auth=${this.auth.token}&eventId=${eventId}`
-      );
+      this.trackingWS = liveFeedService.getWS(eventId, this.auth.token);
       this.trackingWS.onopen = e => {
         //console.log("opened");
       };

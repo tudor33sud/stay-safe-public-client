@@ -101,7 +101,7 @@ $color-text-light: snow;
 }
 .my-content{
     min-height: 100%;
-
+    height: 100%;
     .stepper-next{
         margin-left:0;
     }
@@ -120,7 +120,7 @@ $color-text-light: snow;
     padding: .75em 2em;
     position: relative;
     text-transform: uppercase;
-
+    z-index:6;
     .md-icon{
       color:white;
       font-size:46px;

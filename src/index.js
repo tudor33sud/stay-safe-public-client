@@ -13,7 +13,6 @@ import cleanAfter from 'helpers/clean-after';
 import VueSplit from 'vue-split-panel'
 import './global.scss';
 
-import '../static//materialIcons.css'
 import { MdLayout, MdDivider, MdButton, MdIcon, MdCard,MdChips, MdContent, MdDrawer, MdToolbar, MdList, MdListItem, MdAvatar, MdMenu, MdTooltip, MdEmptyState, MdSteppers, MdProgress, MdField, MdCheckbox, MdSnackbar } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
