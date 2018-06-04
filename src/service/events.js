@@ -25,9 +25,10 @@ function uploadAttachment(eventId, data, onUploadProgress = () => { }) {
     });
 }
 
-function getAttachment(eventId, attachmentId) {
+function getAttachment(eventId, attachmentId, onProgress = () => { }) {
     return axios.get(`${store.getters.backendURL}/events/${eventId}/attachments/${attachmentId}`, {
-        responseType: 'arraybuffer'
+        responseType: 'arraybuffer',
+        onDownloadProgress: onProgress
     });
 }
 

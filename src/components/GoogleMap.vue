@@ -137,23 +137,23 @@ export default {
       this.addPanOnClickListener(this.currentPositionMarker);
 
       if (this.syncGeolocation) {
-        this.locationWatcher = setInterval(() => {
+        this.geolocationInterval = setInterval(() => {
           //production method 
-          // navigator.geolocation.getCurrentPosition(
-          //   this.onLocationWatchSuccess,
-          //   this.onLocationWatchError,
-          //   { timeout: 3500 }
-          // );
-        }, 4000);
-        //test method
-        const geolocationInterval = setInterval(() => {
-          this.onLocationWatchSuccess({
-            coords: {
-              latitude: this.currentPosition.lat + 0.0001,
-              longitude: this.currentPosition.lng + 0.0001
-            }
-          });
+          navigator.geolocation.getCurrentPosition(
+            this.onLocationWatchSuccess,
+            this.onLocationWatchError,
+            { timeout: 3500 }
+          );
         }, 3000);
+        //test method
+        // const geolocationInterval = setInterval(() => {
+        //   this.onLocationWatchSuccess({
+        //     coords: {
+        //       latitude: this.currentPosition.lat + 0.0001,
+        //       longitude: this.currentPosition.lng + 0.0001
+        //     }
+        //   });
+        // }, 3000);
       }
     },
     onLocationWatchSuccess: function(position) {

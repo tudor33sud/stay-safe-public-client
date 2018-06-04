@@ -30,11 +30,20 @@
 }
 
 .md-progress-bar.top-progress-bar{
-  position:absolute;
-  top:0;
+  position:fixed;
+  top:56px;
   right:0;
   left:0;
   z-index:7;
+}
+
+.map-text-control{
+  position:absolute;
+  top:4px;
+  right:0;
+  left:0;
+  z-index:7;
+  text-align:center;
 }
 
 .full-height-relative{

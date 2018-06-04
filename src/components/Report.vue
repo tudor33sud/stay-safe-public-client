@@ -1,7 +1,7 @@
 <template>
   <div class="full-height-relative">
     <md-empty-state v-if="!creatingEvent && !stepperFinished" class="report-action-container">
-      <span @click="creatingEvent = !creatingEvent" class="glowing-item" >
+      <span @click="creatingEvent = !creatingEvent" class="glowing-item">
         <md-icon class="md-size-2x">local_hospital</md-icon>
       </span>
       <h1 class="md-title">Any danger nearby?</h1>
@@ -14,6 +14,7 @@
     <md-content v-if="creatingEvent" class="my-content">
       <md-steppers md-vertical md-linear :md-active-step.sync="activeStepperStep">
         <md-step id="locationStepper" md-label="Location" md-description="Adjust your current location" :md-done.sync="locationSent" :md-editable="false">
+          <p class="md-body-2 step-description">Accurately adjust your current location based on your surroundings. Drag the marker into your position.</p>
           <googlemap name="reportMap" @currentLocationChanged="currentLocationChanged"></googlemap>
           <div class="md-layout " :class="continueStepAlignment">
             <md-button class="md-dense md-primary stepper-next" @click="advanceStepHandler('locationSent', 'tagsStepper')">Continue</md-button>
@@ -21,6 +22,7 @@
         </md-step>
 
         <md-step id="tagsStepper" md-label="Tags" :md-done.sync="tagsCompleted" :md-editable="false">
+          <p class="md-body-2 step-description">Select appropriate tags to fit the gravity of your event. This will be helping ambulances to better prioritize how events will be handled.</p>
           <md-field>
             <label for="tags">Tags</label>
             <md-select v-model="selectedTags" name="tags" id="tags" multiple>
@@ -41,6 +43,9 @@
         </md-step>
 
         <md-step id="addPhotoStepper" md-label="Add a photo" md-description="Optional" :md-done.sync="photoAdded" :md-editable="false">
+          <p class="md-body-2 step-description">
+            <md-icon style="color:black;margin-right:8px;">cloud_done</md-icon>Congratulations! Your event is already sent to our system.</p>
+          <p class="md-body-2 step-description">Feel free to add some photos to help us identify the location, or you can just skip to finish.</p>
           <md-field>
             <label>Photo</label>
             <md-file v-model="currentFileSelection" @md-change="onFileSelection" />
@@ -50,18 +55,18 @@
             <span>There was an error uploading your file</span>
             <md-button class="md-accent" @click="showUploadError = false">Dismiss</md-button>
           </md-snackbar>
+          <div class="md-layout preview-container md-gutter">
+            <div class="md-layout-item md-size-25 md-small-size-100" v-for="(attachment,index) in attachmentsData" :key="index">
+              <div class="upload-image-container">
+                <img v-if="attachment.loaded" class="upload-image" :src="attachment.data" />
+              </div>
+            </div>
+          </div>
           <div class="md-layout" :class="continueStepAlignment">
             <md-button class="md-dense md-accent stepper-next" @click="advanceStepHandler('photoAdded', 'endStepper')">Finish</md-button>
           </div>
         </md-step>
       </md-steppers>
-      <div class="md-layout preview-container">
-        <div class="md-layout-item md-size-25 md-small-size-50" v-for="(attachmentData,index) in attachmentsData" :key="index">
-          <div class="upload-image-container">
-            <img class="upload-image" :src="attachmentData" />
-          </div>
-        </div>
-      </div>
 
     </md-content>
 
@@ -86,10 +91,12 @@
     }
 }
 
-$color-primary: #547cf5;
-$color-primary-light: #e0422c;
+ $color-primary: var(--md-theme-default-primary, #448aff);
+//$color-primary: #448aff;
+// $color-primary-light: #e0422c;
+$color-primary-light: var(--md-theme-default-accent, #ff5252);
 $color-text-light: snow;
-
+$step-description-color: gray;
 
 @-webkit-keyframes rotation {
 		from {
@@ -102,8 +109,17 @@ $color-text-light: snow;
 .my-content{
     min-height: 100%;
     height: 100%;
+    @media screen and (max-width: 960px) {
+      //fix for toolbar hamburger button alignment on smaller screens
+      margin-left: -8px;
+    }
     .stepper-next{
         margin-left:0;
+    }
+
+    .step-description{
+      // color: $step-description-color;
+      opacity:0.70;
     }
 }
 .glowing-item {
@@ -167,17 +183,16 @@ $color-text-light: snow;
     background: $color-primary;
   }
 }
-.preview-container{
-  margin-left: 24px;
+.md-layout.preview-container{
+  align-items: center;
+  justify-content: center;
+  // margin-left: 24px;
   .upload-image-container{
-    margin-right:24px;
-    background-color:ghostwhite;
+    margin-bottom:24px;
+    vertical-align:middle;
   }
   .upload-image{
-    display:block;
-    margin: 0 auto;
-    height:200px;
-    width:auto;
+    border-radius: 10px;
   } 
 }
 
@@ -330,13 +345,30 @@ module.exports = {
       });
     },
     getAttachment: function(attachmentId) {
+      this.attachmentsData.push({ loaded: false, progress: 0 });
+
       eventService
-        .getAttachment(this.createdEvent.id, attachmentId)
+        .getAttachment(this.createdEvent.id, attachmentId, progressEvent => {
+          // console.log(progressEvent);
+          // const progress = Math.round(
+          //   progressEvent.loaded * 100 / progressEvent.total
+          // );
+          // console.log("download progress " + progress);
+          // console.log(this.attachmentsData[attachmentId - 1].progress);
+          // debugger;
+          // this.attachmentsData[attachmentId - 1].progress = progress;
+          // console.log(this.attachmentsData[attachmentId].progress);
+        })
         .then(response => {
           const imageData =
             "data:image/png;base64, " +
             new Buffer(response.data, "binary").toString("base64");
-          this.attachmentsData.push(imageData);
+          const attachmentData = {
+            loaded: true,
+            data: imageData,
+            progress: 100
+          };
+          this.$set(this.attachmentsData, attachmentId - 1, attachmentData);
         })
         .catch(err => {
           console.log(err);

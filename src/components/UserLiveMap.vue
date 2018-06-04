@@ -1,6 +1,7 @@
 <template>
   <div class="full-height-relative">
     <md-progress-bar v-show="loadingVisible" class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
+    <span v-show="mapText" class="md-body-1 map-text-control">{{mapText}}</span>
     <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
     </googlemap>
   </div>
@@ -40,6 +41,7 @@ module.exports = {
   },
   mounted() {
     this.initWebSocket(this.event.id);
+    this.mapText="Waiting for help...";
   },
   beforeDestroy() {
     if (this.trackingWS != null) {
@@ -62,7 +64,8 @@ module.exports = {
           title: "Event location"
         })
       ],
-      healthInterval:undefined
+      healthInterval:undefined,
+      mapText: undefined
     };
   },
   methods: {
@@ -85,10 +88,12 @@ module.exports = {
       try {
         const parsed = JSON.parse(message.data);
         if (parsed.type === "ambLocUpdate") {
+          this.mapText = "Help is on the way";
           this.loadingVisible = false;
           this.ambulanceMarkerObject = [getMarkerFromParsedMessage(parsed)];
         } else {
           if (parsed.type === "finishedEvent") {
+            this.mapText = "Event completed";
             this.$emit("finishedEvent", parsed.value.eventId);
           }
         }
