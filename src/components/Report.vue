@@ -190,9 +190,11 @@ $step-description-color: gray;
   .upload-image-container{
     margin-bottom:24px;
     vertical-align:middle;
+    text-align: center;
   }
   .upload-image{
     border-radius: 10px;
+    max-height:400px;
   } 
 }
 
