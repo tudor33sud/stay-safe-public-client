@@ -92,7 +92,7 @@ export default {
       navigator.geolocation.getCurrentPosition(
         this.locationSuccessHandler,
         this.locationErrorHandler,
-        { timeout: 5000 }
+        { timeout: 5000, enableHighAccuracy: true, maximumAge: 2 }
       );
     }
     this.registerMarkers(this.markers);
@@ -138,7 +138,7 @@ export default {
 
       if (this.syncGeolocation) {
         this.geolocationInterval = setInterval(() => {
-          //production method 
+          //production method
           navigator.geolocation.getCurrentPosition(
             this.onLocationWatchSuccess,
             this.onLocationWatchError,
