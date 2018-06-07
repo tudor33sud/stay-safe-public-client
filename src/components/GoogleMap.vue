@@ -96,13 +96,14 @@ export default {
       navigator.geolocation.getCurrentPosition(
         this.locationSuccessHandler,
         this.locationErrorHandler,
-        { timeout: 60000, enableHighAccuracy: true, maximumAge:0}
+        { timeout: 60000, enableHighAccuracy: true, maximumAge: 0 }
       );
     }
     this.registerMarkers(this.markers);
   },
   methods: {
     locationErrorHandler: function(error) {
+      alert(`DEBUG: Initial location error: ${error.message}`);
       console.log(error);
     },
     locationSuccessHandler: function(position) {
@@ -146,7 +147,7 @@ export default {
           navigator.geolocation.getCurrentPosition(
             this.onLocationWatchSuccess,
             this.onLocationWatchError,
-            { timeout: 10000 }
+            { timeout: 10000, enableHighAccuracy: true, maximumAge: 2 }
           );
         }, 3000);
         //test method
@@ -161,7 +162,7 @@ export default {
       }
     },
     onLocationWatchSuccess: function(position) {
-      console.log('update synced geolocation');
+      console.log("update synced geolocation");
       const latLngPosition = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
