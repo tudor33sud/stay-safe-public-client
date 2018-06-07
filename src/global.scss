@@ -70,6 +70,10 @@ body{
   position: relative;
 }
 
+.md-overlay{
+  position:fixed !important;
+}
+
 #app{
   height:100%;
 }
