@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height-relative">
+  <div>
     <md-empty-state v-if="!creatingEvent && !stepperFinished" class="report-action-container">
       <span @click="creatingEvent = !creatingEvent" class="glowing-item">
         <md-icon class="md-size-2x">local_hospital</md-icon>
@@ -42,13 +42,13 @@
           </md-snackbar>
         </md-step>
 
-        <md-step id="addPhotoStepper" md-label="Add a photo" md-description="Optional" :md-done.sync="photoAdded" :md-editable="false">
+        <md-step id="addPhotoStepper" style="" md-label="Add a photo" md-description="Optional" :md-done.sync="photoAdded" :md-editable="false">
           <p class="md-body-2 step-description">
             <md-icon style="color:black;margin-right:8px;">cloud_done</md-icon>Congratulations! Your event is already sent to our system.</p>
           <p class="md-body-2 step-description">Feel free to add some photos to help us identify the location, or you can just skip to finish.</p>
-          <md-field>
+          <md-field ref="myRef">
             <label>Photo</label>
-            <md-file v-model="currentFileSelection" @md-change="onFileSelection" />
+            <md-file ref="fileUpload" v-model="currentFileSelection" @md-change="onFileSelection" />
             <md-progress-spinner v-if="isUploading" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
           </md-field>
           <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showUploadError" md-persistent>
@@ -67,12 +67,11 @@
           </div>
         </md-step>
       </md-steppers>
-
+    </md-content>
+    <md-content v-if="eventLive" class="my-content">
+      <userlivemap :event="createdEvent" @finishedEvent="onFinishedEvent"></userlivemap>
     </md-content>
 
-    <div style="height:100%;" v-if="eventLive">
-      <userlivemap :event="createdEvent" @finishedEvent="onFinishedEvent"></userlivemap>
-    </div>
     <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventFinished" md-persistent>
       <span>Event finished successfully!</span>
       <md-button class="md-primary" @click="showEventFinished = false; resetComponent()">Ok</md-button>
@@ -98,6 +97,7 @@ $color-primary-light: var(--md-theme-default-accent, #ff5252);
 $color-text-light: snow;
 $step-description-color: gray;
 
+
 @-webkit-keyframes rotation {
 		from {
 				-webkit-transform: rotate(0);
@@ -107,8 +107,8 @@ $step-description-color: gray;
 		}
 }
 .my-content{
-    min-height: 100%;
     height: 100%;
+    position:relative;
     @media screen and (max-width: 960px) {
       //fix for toolbar hamburger button alignment on smaller screens
       margin-left: -8px;
@@ -244,7 +244,9 @@ module.exports = {
     resetComponent: function() {
       Object.assign(this.$data, this.initialData());
     },
-    onFileSelection(fileList) {
+    onFileSelection(fileList, arg, args) {
+      if (fileList.length === 0) return;
+
       if (!this.createdEvent) {
         throw new Error("no event in current context");
       }
@@ -252,7 +254,6 @@ module.exports = {
       const file = fileList[0];
       const data = new FormData();
       data.append("image", file);
-      // setTimeout(() => {
       eventService
         .uploadAttachment(this.createdEvent.id, data, this.onUploadProgress)
         .then(response => {
@@ -268,7 +269,6 @@ module.exports = {
           this.isUploading = false;
           this.showUploadError = true;
         });
-      // }, 1000);
     },
     onUploadProgress: function(progressEvent) {
       const percentCompleted = Math.round(

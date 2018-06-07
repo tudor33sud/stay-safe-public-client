@@ -1,13 +1,17 @@
 <template>
   <div class="google-map" :id="mapName"></div>
 </template>
-<style scoped>
+<style lang="sass" scoped>
 .google-map {
   /* min-width: 400px; */
   width: 100%;
   height: 70vh;
   margin: 0 auto;
   background: gray;
+
+  @media screen and (max-width: 760px) {
+    height:40vh
+  }
 }
 </style>
 

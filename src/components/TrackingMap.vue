@@ -85,9 +85,12 @@ $text-color-black: #000;
     bottom: 0;
     height: 100%;
     width: 100%;
-    .md-icon-button{
-      right:30px;
+    @media screen and (min-width: 960px) {
+      .md-icon-button{
+         right:30px;
+      }
     }
+
   }
 
   .md-icon-button{

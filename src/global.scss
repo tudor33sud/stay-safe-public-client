@@ -20,6 +20,19 @@
     opacity: 0;
   }
 
+body{
+    overflow-y:auto;
+    -webkit-perspective: 0;
+    @media screen and (max-width: 768px) {
+      overflow-y:scroll;
+      -webkit-overflow-scrolling: touch;
+      //try to fix ios bug
+      // #app{
+      //   height: calc(100% + 1px);
+      // }
+    }
+}
+
 .centered-container{
   position: absolute !important;
   top:0;
@@ -34,7 +47,7 @@
   top:56px;
   right:0;
   left:0;
-  z-index:7;
+  z-index:5;
 }
 
 .map-text-control{
@@ -47,9 +60,29 @@
 }
 
 .full-height-relative{
-  height:100%;
-  position:relative;
+  //revert here if needed
+  // position:absolute;
+  // top:56px;
+  // bottom:0;
+  // left:0;
+  // right:0;
+  height: 100%;
+  position: relative;
 }
+
+#app{
+  height:100%;
+}
+
+.full-height{
+  height:100%;
+}
+
+//try to hack browser to work ok
+// *:not(html){
+//   -webkit-transform: translate3d(0,0,0);
+//   // transform: translate3d(0,0,0);
+// }
 
 .md-card-example {
   .md-title {

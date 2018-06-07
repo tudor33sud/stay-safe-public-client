@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div style="height:100%">
     <md-toolbar class="md-primary fixedSizeToolbar">
       <md-button class="md-icon-button" @click="showNavigation = true">
         <md-icon>menu</md-icon>
@@ -45,6 +45,8 @@
   .fixedSizeToolbar{
     min-height:56px;
     height: 56px;
+    position:fixed;
+
   }
   .md-drawer {
     width: 230px;
@@ -52,15 +54,17 @@
   }
 
   .router-view{
-    height: calc(100vh - 56px);
-    height: -webkit-calc(100vh - 56px);
-    height: -moz-calc(100vh - 56px);
-    overflow-y:auto;
-    @media screen and (max-width: 768px) {
-      overflow-y:scroll;
-      -webkit-overflow-scrolling: touch;
-    }
+    position:relative;
+    padding-top:56px;
+    height:100%;
+
+    // height: calc(100vh - 56px);
+    // height: -webkit-calc(100vh - 56px);
+    // height: -moz-calc(100vh - 56px);
+    // overflow-y:auto;
+
   }
+
 </style>
 
 

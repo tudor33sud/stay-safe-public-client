@@ -72,11 +72,11 @@
 $cards-spacing-big-screen: 24px;
 $cards-spacing-medium-screen: 16px;
 .cards-layout {
-    margin-left:$cards-spacing-big-screen;
-    margin-top: $cards-spacing-big-screen;
+    padding-left:$cards-spacing-big-screen;
+    padding-top: $cards-spacing-big-screen;
     @media screen and (max-width: 960px) {
-      margin-left: $cards-spacing-medium-screen;
-      margin-top: $cards-spacing-medium-screen;
+      padding-left: $cards-spacing-medium-screen;
+      padding-top: $cards-spacing-medium-screen;
     }
 
     .md-card {
