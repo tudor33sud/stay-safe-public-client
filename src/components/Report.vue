@@ -1,9 +1,9 @@
 <template>
   <div>
     <md-empty-state v-if="!creatingEvent && !stepperFinished" class="report-action-container">
-      <span @click="creatingEvent = !creatingEvent" class="glowing-item">
+      <button @click="creatingEvent = !creatingEvent" class="glowing-item">
         <md-icon class="md-size-2x">local_hospital</md-icon>
-      </span>
+      </button>
       <h1 class="md-title">Any danger nearby?</h1>
     </md-empty-state>
     <md-empty-state class="md-primary" style="margin-top:20vh;" v-if="stepperFinished && !eventLive" md-label="All set. Wanna go live?" md-icon="check_circle">
