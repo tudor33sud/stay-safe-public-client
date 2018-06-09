@@ -7,14 +7,27 @@
       <span class="md-title">Stay safe</span>
 
       <div class="md-toolbar-section-end" v-show="authenticated">
-        <md-menu md-align-trigger>
+        <md-menu md-align-trigger md-size="auto">
           <span md-menu-trigger>
             <md-avatar class="md-avatar-icon" style="margin:0">{{username.substr(0,1)}}</md-avatar>
           </span>
           <md-menu-content>
-            <md-menu-item class="md-primary">{{username}}</md-menu-item>
+            <!-- <md-menu-item class="md-primary">{{username}}</md-menu-item> -->
+            <md-menu-item style="margin-bottom:8px;">
+              <div class="md-list-item-text">
+                <span>{{username}}</span>
+                <span>{{email}}</span>
+              </div>
+            </md-menu-item>
             <md-divider></md-divider>
-            <md-menu-item @click="logout()">Logout</md-menu-item>
+            <md-menu-item href="https://auth.safeinromania.com/auth/realms/StaySafe/account">
+              <md-icon>person</md-icon>
+              <div class="md-list-item-text">User Profile</div>
+            </md-menu-item>
+            <md-menu-item @click="logout()">
+              <md-icon>exit_to_app</md-icon>
+              <div class="md-list-item-text">Logout</div>
+            </md-menu-item>
           </md-menu-content>
         </md-menu>
       </div>
@@ -108,6 +121,13 @@ module.exports = {
       if (this.auth) {
         const tokenParsed = this.auth.idTokenParsed;
         return tokenParsed.name;
+      }
+      return "";
+    },
+    email: function() {
+      if (this.auth) {
+        const tokenParsed = this.auth.idTokenParsed;
+        return tokenParsed.email;
       }
       return "";
     },
