@@ -3,7 +3,7 @@
     <md-progress-bar v-show="loadingVisible" class="top-progress-bar" md-mode="indeterminate"></md-progress-bar>
     <div v-if="myEvents.length == 0 && !eventLive && !loadingVisible">
       <md-empty-state class="md-primary centered-container" md-icon="error" md-label="No events added yet">
-        <md-button to="/report" class="stepper-next">Report now</md-button>
+        <md-button to="/report" class="stepper-next md-accent">Report now</md-button>
       </md-empty-state>
     </div>
     <div v-if="!eventLive" class="md-layout cards-layout">
