@@ -52,7 +52,7 @@
           </md-card-content>
 
           <md-card-actions>
-            <md-button v-if="event.status==='busy' || event.status==='requested'" class="full-width md-primary" @click="goLive(event)" :md-ripple="false">Live</md-button>
+            <md-button v-if="event.status==='busy' || event.status==='requested'" class="full-width md-accent" @click="goLive(event)" :md-ripple="false">Live</md-button>
             <md-button v-else class="full-width" disabled>Completed</md-button>
           </md-card-actions>
         </md-card>
@@ -63,7 +63,7 @@
     </div>
     <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventFinished" md-persistent>
       <span>Event finished successfully!</span>
-      <md-button class="md-primary" @click="showEventFinished = false; untrackEvent()">Ok</md-button>
+      <md-button class="md-primary md-accent" @click="showEventFinished = false; untrackEvent()">Ok</md-button>
     </md-snackbar>
   </div>
 </template>
@@ -174,7 +174,7 @@ module.exports = {
     },
     getGravityClass(gravity) {
       if (gravity === 0) {
-        return ["md-accent"];
+        return ["high-gravity"];
       }
       return [];
     },

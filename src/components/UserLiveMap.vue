@@ -1,7 +1,10 @@
 <template>
   <div class="full-height-relative">
-    <md-progress-bar v-show="loadingVisible" class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
-    <span v-show="mapText" class="md-body-1 map-text-control">{{mapText}}</span>
+    <div class="messages-wrapper">
+      <md-progress-bar v-show="loadingVisible" class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
+      <span v-show="mapText" class="md-body-1 map-text-control">{{mapText}}</span>
+    </div>
+
     <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
     </googlemap>
   </div>
@@ -11,6 +14,17 @@
 #livemap-map{
     height:100%;
 }
+// .messages-wrapper{
+//   position:absolute;
+//   top:0;
+//   right:0;
+//   left:0;
+//   height:24px;
+//   background-color:black;
+//   color:white !important;
+//   opacity:0.6;
+//   z-index:4;
+// }
 </style>
 
 <script>
@@ -41,7 +55,7 @@ module.exports = {
   },
   mounted() {
     this.initWebSocket(this.event.id);
-    this.mapText="Waiting for help...";
+    this.mapText = "Waiting for help...";
   },
   beforeDestroy() {
     if (this.trackingWS != null) {
@@ -50,7 +64,7 @@ module.exports = {
         this.trackingWS.close();
       }
     }
-    if(this.healthInterval){
+    if (this.healthInterval) {
       clearInterval(this.healthInterval);
     }
   },
@@ -64,7 +78,7 @@ module.exports = {
           title: "Event location"
         })
       ],
-      healthInterval:undefined,
+      healthInterval: undefined,
       mapText: undefined
     };
   },
@@ -72,9 +86,9 @@ module.exports = {
     initWebSocket(eventId) {
       this.trackingWS = liveFeedService.getWS(eventId, this.auth.token);
       this.trackingWS.onopen = e => {
-        this.healthInterval = setInterval(()=>{
+        this.healthInterval = setInterval(() => {
           liveFeedService.sendHealth(this.trackingWS);
-        },10000);
+        }, 10000);
         //console.log("opened");
       };
       this.trackingWS.onclose = e => {

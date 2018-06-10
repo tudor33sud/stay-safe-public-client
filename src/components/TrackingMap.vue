@@ -24,7 +24,7 @@
       <md-button class="md-raised md-icon-button btn-details" @click="detailsFullScreen = !detailsFullScreen">
         <md-icon>unfold_more</md-icon>
       </md-button>
-      <md-button class="md-raised md-icon-button btn-success md-primary" @click="finishEvent(event)">
+      <md-button class="md-raised md-icon-button btn-success md-accent" @click="finishEvent(event)">
         <md-icon>check</md-icon>
       </md-button>
     </div>

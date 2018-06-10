@@ -6,8 +6,8 @@
       </button>
       <h1 class="md-title">Any danger nearby?</h1>
     </md-empty-state>
-    <md-empty-state class="md-primary" style="margin-top:20vh;" v-if="stepperFinished && !eventLive" md-label="All set. Wanna go live?" md-icon="check_circle">
-      <md-button class="md-primary stepper-next" @click="goLive()">Go Live</md-button>
+    <md-empty-state class="md-accent" style="margin-top:20vh;" v-if="stepperFinished && !eventLive" md-label="All set. Wanna go live?" md-icon="check_circle">
+      <md-button class="md-accent md-raised stepper-next" @click="goLive()">Go Live</md-button>
       <md-button @click="resetComponent()" class="stepper-next">Back</md-button>
     </md-empty-state>
 
@@ -17,7 +17,7 @@
           <p class="md-body-2 step-description">Accurately adjust your current location based on your surroundings. Drag the marker into your position.</p>
           <googlemap name="reportMap" @currentLocationChanged="currentLocationChanged"></googlemap>
           <div class="md-layout " :class="continueStepAlignment">
-            <md-button class="md-dense md-primary stepper-next" @click="advanceStepHandler('locationSent', 'tagsStepper')">Continue</md-button>
+            <md-button class=" md-raised md-dense md-accent stepper-next" @click="advanceStepHandler('locationSent', 'tagsStepper')">Continue</md-button>
           </div>
         </md-step>
 
@@ -30,7 +30,7 @@
             </md-select>
           </md-field>
           <div class="md-layout" :class="continueStepAlignment">
-            <md-button class="md-dense md-primary stepper-next" @click="advanceStepHandler('tagsCompleted', 'addPhotoStepper')">Continue</md-button>
+            <md-button class="md-raised md-dense md-accent stepper-next" @click="advanceStepHandler('tagsCompleted', 'addPhotoStepper')">Continue</md-button>
           </div>
           <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showNoTagsSelectedError" md-persistent>
             <span>You must select at least one tag!</span>
@@ -63,7 +63,7 @@
             </div>
           </div>
           <div class="md-layout" :class="continueStepAlignment">
-            <md-button class="md-dense md-accent stepper-next" @click="advanceStepHandler('photoAdded', 'endStepper')">Finish</md-button>
+            <md-button class="md-dense md-raised md-accent stepper-next" @click="advanceStepHandler('photoAdded', 'endStepper')">Finish</md-button>
           </div>
         </md-step>
       </md-steppers>
@@ -74,7 +74,7 @@
 
     <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showEventFinished" md-persistent>
       <span>Event finished successfully!</span>
-      <md-button class="md-primary" @click="showEventFinished = false; resetComponent()">Ok</md-button>
+      <md-button class="md-accent" @click="showEventFinished = false; resetComponent()">Ok</md-button>
     </md-snackbar>
   </div>
 
