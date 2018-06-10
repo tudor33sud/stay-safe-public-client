@@ -1,11 +1,11 @@
 <template>
-  <div class="full-height-relative">
+  <div class="full-height-relative" style="padding-top:24px;">
     <div class="messages-wrapper">
       <md-progress-bar v-show="loadingVisible" class="md-accent top-progress-bar" md-mode="indeterminate"></md-progress-bar>
       <span v-show="mapText" class="md-body-1 map-text-control">{{mapText}}</span>
     </div>
 
-    <googlemap name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
+    <googlemap  name="livemap" :geolocation="false" :markers="targetMarkerArray" :syncedMarkers="ambulanceMarkerObject">
     </googlemap>
   </div>
 </template>
@@ -14,17 +14,17 @@
 #livemap-map{
     height:100%;
 }
-// .messages-wrapper{
-//   position:absolute;
-//   top:0;
-//   right:0;
-//   left:0;
-//   height:24px;
-//   background-color:black;
-//   color:white !important;
-//   opacity:0.6;
-//   z-index:4;
-// }
+.messages-wrapper{
+  position:absolute;
+  top:0;
+  right:0;
+  left:0;
+  height:24px;
+  background-color:black;
+  color:white !important;
+  opacity:0.7;
+  z-index:4;
+}
 </style>
 
 <script>
