@@ -38,7 +38,7 @@
 import { mapGetters } from "vuex";
 import * as liveFeedService from "../service/live-feed";
 import * as eventService from "../service/events";
-const ambulanceIcon = "/static/assets/ambulance.png";
+const ambulanceIcon = "/static/assets/siren_40_final.png";
 function getMarkerFromParsedMessage(parsed) {
   const { lat, lng } = parsed.value;
   return {

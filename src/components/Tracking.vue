@@ -13,8 +13,9 @@
               <h3 class="md-title">
                 <md-icon>account_circle</md-icon> {{event.requester.display}}</h3>
               <div class="md-subhead">
-                <md-icon>location_on</md-icon>
-                <span>{{event.distance? `${event.distance}km`:`N/A`}}</span>
+                <md-icon style="width:24px;">location_on</md-icon>
+                <span>{{event.distance? `${event.distance}km `:`N/A `}}</span>
+                <span style="display:block">{{event.location.address}}</span>
               </div>
             </md-card-header>
           </md-card-area>
@@ -159,9 +160,7 @@ module.exports = {
             this.trackingEvents = response.data;
           } else {
             const mappedEvents = response.data.map(event => {
-              const eventWithLatLong = Object.assign({}, event, {
-                location: eventService.getLatLng(event)
-              });
+              const eventWithLatLong = event;
               eventWithLatLong.distance = getDistance(
                 this.currentPosition,
                 eventWithLatLong.location

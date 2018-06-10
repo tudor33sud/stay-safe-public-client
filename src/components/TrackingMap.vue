@@ -115,7 +115,7 @@ import * as liveFeedService from "../service/live-feed";
 import * as eventService from "../service/events";
 import * as trackingService from "../service/tracking";
 import moment from "moment";
-const ambulanceIcon = "/static/assets/ambulance.png";
+const ambulanceIcon = "/static/assets/siren_40_final.png";
 module.exports = {
   props: {
     event: {
