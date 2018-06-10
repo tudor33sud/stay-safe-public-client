@@ -16,6 +16,7 @@ import './global.scss';
 import { MdLayout, MdDivider, MdButton, MdIcon, MdCard,MdChips, MdContent, MdDrawer, MdToolbar, MdList, MdListItem, MdAvatar, MdMenu, MdTooltip, MdEmptyState, MdSteppers, MdProgress, MdField, MdCheckbox, MdSnackbar } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
+import 'vue-material/dist/theme/black-green-light.css'
 import VueMaterial from 'vue-material'
 Vue.use(VueAxios, axios)
 Vue.use(MdLayout);
