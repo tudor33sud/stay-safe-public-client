@@ -8,8 +8,7 @@
   .slide-fade-leave-active {
     transition: all 2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   }
-  .slide-fade-enter, .slide-fade-leave-to
-  /* .slide-fade-leave-active below version 2.1.8 */ {
+  .slide-fade-enter, .slide-fade-leave-to {
     transform: translateX(10px);
     opacity: 0;
   }
@@ -26,10 +25,6 @@ body{
     @media screen and (max-width: 768px) {
       overflow-y:scroll;
       -webkit-overflow-scrolling: touch;
-      //try to fix ios bug
-      // #app{
-      //   height: calc(100% + 1px);
-      // }
     }
 }
 
@@ -55,18 +50,10 @@ body{
   top:4px;
   right:0;
   left:0;
-  z-index:7;
   text-align:center;
-  font-size:16px !important;
 }
 
 .full-height-relative{
-  //revert here if needed
-  // position:absolute;
-  // top:56px;
-  // bottom:0;
-  // left:0;
-  // right:0;
   height: 100%;
   position: relative;
 }
